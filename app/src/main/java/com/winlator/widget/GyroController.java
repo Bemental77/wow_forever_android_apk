@@ -10,7 +10,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
-import app.gamenative.data.GyroSettings;
+import com.wowforever.data.GyroSettings;
 import com.winlator.inputcontrols.GamepadState;
 
 import java.util.HashSet;

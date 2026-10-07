@@ -33,7 +33,7 @@
     <string name="custom_game_importing">Импорт игры…</string>
     <string name="custom_game_import_success">Игра импортирована</string>
     <string name="custom_game_import_failed">Не удалось импортировать</string>
-    <string name="custom_game_import_dialog_message">Выберите папку с игрой. Она будет импортирована в хранилище GameNative, чтобы работать без разрешения на доступ к хранилищу. Импорт больших игр может занять несколько минут.</string>
+    <string name="custom_game_import_dialog_message">Выберите папку с игрой. Она будет импортирована в хранилище WoW Forever, чтобы работать без разрешения на доступ к хранилищу. Импорт больших игр может занять несколько минут.</string>
     <string name="custom_game_import_remove_original">Удалить оригинал после импорта</string>
     <string name="add_custom_game_dialog_title">Добавить пользовательскую игру</string>
     <string name="add_custom_game_dont_show_again">Не показывать этот диалог снова</string>
@@ -154,7 +154,7 @@
     <string name="community_config_gpu">GPU</string>
     <string name="community_config_android">Android</string>
     <string name="community_config_soc">SoC</string>
-    <string name="community_config_app_version">Версия GameNative</string>
+    <string name="community_config_app_version">Версия WoW Forever</string>
     <string name="community_config_submitted">Отправлено</string>
     <string name="community_config_session_length">Длительность сеанса</string>
     <string name="community_config_game_store">Магазин игры</string>
@@ -734,7 +734,7 @@ Ubuntu RootFs - releases.ubuntu.com/focal</string>
     <string name="location">Местоположение</string>
     <string name="log_out">Выход</string>
     <string name="login_2fa">Двухфакторная аутентификация</string>
-    <string name="login_app_name">GameNative</string>
+    <string name="login_app_name">WoW Forever</string>
     <string name="login_or_sign_in_with">Или войдите через:</string>
     <string name="login_password">Пароль</string>
     <string name="login_password_hide">Скрыть пароль</string>
@@ -817,15 +817,13 @@ Ubuntu RootFs - releases.ubuntu.com/focal</string>
     <string name="main_save_conflict_title">Конфликт сохранений</string>
     <string name="main_save_conflict_upgrade_v1_title">Выберите версию сохранения</string>
     <string name="main_save_conflict_upgrade_v1_message">Мы исправили обработку путей облачных сохранений для этой игры и обнаружили различия между локальным и облачным сохранением.\n\nЛокальное сохранение:\n\t%1$s\nОблачное сохранение:\n\t%2$s</string>
-    <string name="main_thank_you_title">Нравится GameNative?</string>
+    <string name="main_thank_you_title">Нравится WoW Forever?</string>
     <string name="main_thank_you_message">Станьте участником сегодня. Участники получают:\n\n• Ранний доступ к новым версиям\n• Приоритетную помощь с запуском игр\n• Премиум-роли и эксклюзивные каналы в Discord\n• …и не только\n\nОт $5/мес.</string>
     <string name="main_join_kofi">Стать участником</string>
     <string name="pitch_session_title">Нравится %1$s?</string>
     <string name="pitch_five_star_title">Рады, что %1$s отлично работает!</string>
     <string name="main_share">Поделиться</string>
-    <string name="main_share_text">Проверьте GameNative - играйте в ваши ПК игры Steam на Android, с полной поддержкой облачных сохранений!
-https://gamenative.app
-Присоединитесь к сообществу: https://discord.gg/2hKv4VfZfE</string>
+    <string name="main_share_text">Проверьте WoW Forever - играйте в ваши ПК игры Steam на Android, с полной поддержкой облачных сохранений!</string>
     <string name="main_sync_failed">Ошибка синхронизации файлов сохранений: %s.</string>
     <string name="main_sync_in_progress">Синхронизация в процессе. Пожалуйста, попробуйте снова через момент.</string>
     <string name="main_sync_in_progress_launch_anyway_message">Синхронизация облачного сохранения для этой игры уже запущена. Вы можете подождать и попробовать снова, или запустить в любом случае без синхронизации (может вызвать конфликты сохранений).</string>
@@ -1120,9 +1118,9 @@ https://gamenative.app
     <string name="settings_emulation_title">Эмуляция</string>
     <string name="settings_emulation_wine_proton_manager_subtitle">Импортировать пользовательские версии Wine/Proton (только Bionic)</string>
     <string name="settings_emulation_wine_proton_manager_title">Менеджер Wine/Proton</string>
-    <string name="settings_info_libraries_subtitle">Узнайте, какие технологии делают GameNative возможным</string>
+    <string name="settings_info_libraries_subtitle">Узнайте, какие технологии делают WoW Forever возможным</string>
     <string name="settings_info_libraries_title">Используемые библиотеки</string>
-    <string name="settings_info_privacy_subtitle">Открывает ссылку на политику конфиденциальности GameNative</string>
+    <string name="settings_info_privacy_subtitle">Открывает ссылку на политику конфиденциальности WoW Forever</string>
     <string name="settings_info_privacy_title">Политика конфиденциальности</string>
     <string name="settings_info_usage_analytics_title">Аналитика использования</string>
     <string name="settings_info_usage_analytics_subtitle">Мы никогда не отслеживаем личную информацию. Отключение останавливает несущественную аналитику, однако основные данные о производительности игр по-прежнему собираются как законный интерес для улучшения совместимости.</string>
@@ -1130,7 +1128,7 @@ https://gamenative.app
     <string name="settings_info_send_tip_title">Стать участником</string>
     <string name="settings_info_send_tip_subtitle">Ранний доступ к версиям, приоритетная помощь и другое</string>
     <string name="settings_info_ask_tip_title">Предложения о членстве</string>
-    <string name="settings_info_ask_tip_subtitle">Иногда показывать предложения стать участником GameNative</string>
+    <string name="settings_info_ask_tip_subtitle">Иногда показывать предложения стать участником WoW Forever</string>
     <string name="settings_info_source_title">Исходный код</string>
     <string name="settings_info_title">Информация</string>
     <string name="settings_interface_download_server_title">Сервер загрузки Steam</string>
@@ -1422,7 +1420,7 @@ https://gamenative.app
     <string name="wine_proton_failed_file_picker">Ошибка открытия выбора файла: %s</string>
     <string name="wine_proton_file_empty">Файл пуст или не может быть прочитан</string>
     <string name="wine_proton_filename_error">Имя файла должно начинаться с \'wine\' или \'proton\' (без учёта регистра)</string>
-    <string name="wine_proton_glibc_incompatible">Эта сборка Wine/Proton требует контейнеров GLIBC и несовместима с GameNative. Пожалуйста, используйте только сборки ARM64/bionic.</string>
+    <string name="wine_proton_glibc_incompatible">Эта сборка Wine/Proton требует контейнеров GLIBC и несовместима с WoW Forever. Пожалуйста, используйте только сборки ARM64/bionic.</string>
     <string name="wine_proton_import_package">Импортировать пакет Wine/Proton</string>
     <string name="wine_proton_import_wcp_button">Импортировать пакет .wcp</string>
     <string name="wine_proton_info_description">Импортируйте пользовательские версии Wine или Proton для контейнеров Bionic. Имя файла должно начинаться с \'wine\' или \'proton\' (без учёта регистра). Пакеты должны включать bin/, lib/ и prefixPack.txz. Все импортируемые версии совместимы только с bionic.</string>
@@ -1504,7 +1502,7 @@ https://gamenative.app
     <string name="review_mostly_negative">В основном отрицательные</string>
     <string name="review_overwhelmingly_negative">Крайне отрицательные</string>
     <string name="settings_interface_show_recommendations_title">Показывать рекомендации игр</string>
-    <string name="settings_interface_show_recommendations_subtitle">Показывает персональные рекомендации. Оставив это включённым, вы помогаете поддержать GameNative.</string>
+    <string name="settings_interface_show_recommendations_subtitle">Показывает персональные рекомендации. Оставив это включённым, вы помогаете поддержать WoW Forever.</string>
     <string name="settings_interface_library_tabs_title">Вкладки библиотеки</string>
     <string name="settings_interface_library_tabs_subtitle">Выберите, какие вкладки магазинов отображать в библиотеке.</string>
     <string name="settings_interface_library_tabs_none">Нет вкладок магазинов</string>
@@ -1662,27 +1660,27 @@ https://gamenative.app
     <string name="nexus_oauth_disconnect">Отключить</string>
     <string name="nexus_oauth_disconnecting">Отключение от Nexus Mods…</string>
     <string name="nexus_oauth_disconnect_title">Отключиться от Nexus Mods?</string>
-    <string name="nexus_oauth_disconnect_message">GameNative отзовёт токены Nexus этой учётной записи на данном устройстве. Установленные моды и локальные файлы удалены не будут.</string>
+    <string name="nexus_oauth_disconnect_message">WoW Forever отзовёт токены Nexus этой учётной записи на данном устройстве. Установленные моды и локальные файлы удалены не будут.</string>
     <string name="nexus_oauth_disconnected">Учётная запись Nexus Mods отключена.</string>
     <string name="nexus_oauth_sign_in_failed">Не удалось завершить вход в Nexus Mods. Попробуйте подключиться снова.</string>
     <string name="nexus_oauth_disconnect_failed">Не удалось отключить учётную запись Nexus Mods. Повторите попытку.</string>
     <string name="nexus_oauth_browser_failed">Не удалось открыть вход в Nexus Mods в браузере.</string>
-    <string name="nexus_oauth_invalid_callback">GameNative отклонил недействительный ответ на вход от Nexus Mods.</string>
+    <string name="nexus_oauth_invalid_callback">WoW Forever отклонил недействительный ответ на вход от Nexus Mods.</string>
     <string name="nexus_oauth_sign_in_required">Подключите учётную запись Nexus Mods, прежде чем использовать онлайн-функции Nexus.</string>
     <string name="nexus_oauth_session_unavailable">Авторизация Nexus временно недоступна. Повторите попытку.</string>
-    <string name="nexus_integration_temporarily_unavailable">Поддержка Nexus Mods временно отключена, пока GameNative проходит регистрацию в Nexus Mods. Уже установленными модами по-прежнему можно управлять.</string>
-    <string name="nexus_invalid_nxm_callback">Эта авторизация Nexus недействительна, истекла, уже использована или больше не соответствует активному запросу GameNative. Снова начните загрузку в разделе «Управление модами Nexus».</string>
+    <string name="nexus_integration_temporarily_unavailable">Поддержка Nexus Mods временно отключена, пока WoW Forever проходит регистрацию в Nexus Mods. Уже установленными модами по-прежнему можно управлять.</string>
+    <string name="nexus_invalid_nxm_callback">Эта авторизация Nexus недействительна, истекла, уже использована или больше не соответствует активному запросу WoW Forever. Снова начните загрузку в разделе «Управление модами Nexus».</string>
     <string name="nexus_nxm_callback_received">Авторизация загрузки Nexus получена. Вернитесь в раздел «Управление модами Nexus», если загрузка не возобновится автоматически.</string>
     <string name="nexus_nxm_no_active_target">Откройте раздел «Управление модами Nexus» для нужной игры, затем снова нажмите Mod Manager Download на Nexus Mods.</string>
-    <string name="nexus_nxm_ambiguous_target">GameNative не может безопасно выбрать одно из нескольких открытых окон управления модами. Закройте лишнее окно и повторите Mod Manager Download.</string>
+    <string name="nexus_nxm_ambiguous_target">WoW Forever не может безопасно выбрать одно из нескольких открытых окон управления модами. Закройте лишнее окно и повторите Mod Manager Download.</string>
     <string name="nexus_nxm_file_not_found">Nexus авторизовал файл, который больше недоступен для этого мода. Запросите загрузку снова.</string>
-    <string name="nexus_authorize_in_browser">Nexus требует подтверждения на сайте для этой учётной записи. В браузере выберите Download with Manager, а затем Slow Download; GameNative автоматически возобновит загрузку.</string>
+    <string name="nexus_authorize_in_browser">Nexus требует подтверждения на сайте для этой учётной записи. В браузере выберите Download with Manager, а затем Slow Download; WoW Forever автоматически возобновит загрузку.</string>
     <string name="nexus_open_browser_failed">Не удалось открыть Nexus Mods в браузере.</string>
     <string name="nexus_authorization_timed_out">Время ожидания авторизации на сайте Nexus истекло. Повторите попытку для файла и завершите Download with Manager в браузере.</string>
     <string name="nexus_authorization_expired">Срок действия разрешения на загрузку с сайта Nexus истёк. Откройте Nexus Mods и снова разрешите загрузку файла.</string>
-    <string name="nexus_authorization_already_pending">GameNative уже ожидает, пока Nexus авторизует этот файл. Завершите запрос на загрузку в браузере или отмените действие и повторите попытку.</string>
-    <string name="nexus_authorized_file_received">Nexus авторизовал этот файл. Нажмите на него, чтобы начать загрузку в GameNative.</string>
-    <string name="nexus_authorization_wrong_account">Авторизация на сайте Nexus относится к другой учётной записи. Войдите в ту же учётную запись Nexus в браузере и в GameNative.</string>
+    <string name="nexus_authorization_already_pending">WoW Forever уже ожидает, пока Nexus авторизует этот файл. Завершите запрос на загрузку в браузере или отмените действие и повторите попытку.</string>
+    <string name="nexus_authorized_file_received">Nexus авторизовал этот файл. Нажмите на него, чтобы начать загрузку в WoW Forever.</string>
+    <string name="nexus_authorization_wrong_account">Авторизация на сайте Nexus относится к другой учётной записи. Войдите в ту же учётную запись Nexus в браузере и в WoW Forever.</string>
     <string name="nexus_waiting_for_nexus">Ожидание авторизации на сайте Nexus</string>
     <string name="nexus_resume_requires_website_authorization">Эта загрузка была прервана. Нажмите «Продолжить», чтобы снова авторизовать файл на сайте Nexus Mods.</string>
     <string name="nexus_waiting_for_website_authorization">Коллекция %1$d из %2$d: авторизуйте %3$s на Nexus Mods</string>
@@ -1959,10 +1957,10 @@ https://gamenative.app
     <string name="nexus_no_issues_found">Проблем не обнаружено</string>
     <string name="nexus_no_issues_description">Здесь будут появляться конфликты и предупреждения плагинов.</string>
     <string name="nexus_overwrite_existing_title">Перезаписать существующие файлы?</string>
-    <string name="nexus_overwrite_existing_message">GameNative создаст резервные копии существующих файлов перед их заменой.</string>
+    <string name="nexus_overwrite_existing_message">WoW Forever создаст резервные копии существующих файлов перед их заменой.</string>
     <string name="nexus_backup_overwrite">Резервное копирование и перезапись</string>
     <string name="nexus_apply_mod_order_title">Применить порядок модификаций?</string>
-    <string name="nexus_apply_mod_order_message">GameNative будет применять включенные моды от самого низкого до самого высокого приоритета и создавать резервные копии замененных файлов.</string>
+    <string name="nexus_apply_mod_order_message">WoW Forever будет применять включенные моды от самого низкого до самого высокого приоритета и создавать резервные копии замененных файлов.</string>
     <string name="nexus_backup_apply">Резервное копирование и применение</string>
     <string name="nexus_freed_size">Освобожден %1$s</string>
     <string name="nexus_storage_cleanup_failed">Не удалось очистить хранилище.</string>
@@ -2232,7 +2230,7 @@ https://gamenative.app
     <string name="local_mod_folder_counts">%1$s, %2$s</string>
     <string name="local_mod_name">Название мода</string>
     <string name="local_mod_version_optional">Версия (необязательно)</string>
-    <string name="local_mod_snapshot_notice">GameNative создаёт личную копию и считает её содержимое недоверенным. Исполняемые файлы и сценарии установки никогда не запускаются во время импорта.</string>
+    <string name="local_mod_snapshot_notice">WoW Forever создаёт личную копию и считает её содержимое недоверенным. Исполняемые файлы и сценарии установки никогда не запускаются во время импорта.</string>
     <string name="local_mod_import">Импортировать мод</string>
     <string name="local_mod_archive_source">Локальный архив</string>
     <string name="local_mod_files_source">Локальные файлы</string>
@@ -2242,8 +2240,8 @@ https://gamenative.app
     <string name="local_mod_imported">Локальный мод импортирован</string>
     <string name="local_mod_duplicate">Это содержимое уже управляется как %1$s. Открыт существующий мод.</string>
     <string name="local_mod_name_required">Введите название этого мода.</string>
-    <string name="local_mod_unreadable">GameNative не удалось прочитать выбранное содержимое.</string>
-    <string name="local_mod_unreadable_file">GameNative не удалось прочитать %1$s.</string>
+    <string name="local_mod_unreadable">WoW Forever не удалось прочитать выбранное содержимое.</string>
+    <string name="local_mod_unreadable_file">WoW Forever не удалось прочитать %1$s.</string>
     <string name="local_mod_empty">Выбранный файл пуст.</string>
     <string name="local_mod_empty_folder">Выбранная папка не содержит файлов.</string>
     <string name="local_mod_invalid_archive">Не удалось безопасно прочитать выбранный архив. Он может быть повреждён, зашифрован, разделён на части, не поддерживаться или содержать небезопасные пути.</string>
@@ -2269,7 +2267,7 @@ https://gamenative.app
     <string name="local_mod_import_status_copying">Копирование</string>
     <string name="local_mod_copied_progress">Скопировано %1$s из %2$s</string>
     <string name="nexus_invalid_source_metadata">У этого управляемого мода неполные сведения об источнике, поэтому повторить операцию невозможно.</string>
-    <string name="nexus_archive_memory_error">Архиву требуется больше памяти, чем разрешено Android. Повторите попытку после обновления GameNative или выберите файл меньшего размера.</string>
+    <string name="nexus_archive_memory_error">Архиву требуется больше памяти, чем разрешено Android. Повторите попытку после обновления WoW Forever или выберите файл меньшего размера.</string>
     <!-- Bionic FG (AI) Frame Generation -->
     <string name="steam_invite_tab_title">Пригласить</string>
     <string name="steam_invite_header">Друзей: %1$d</string>
@@ -2394,7 +2392,7 @@ https://gamenative.app
     <string name="settings_hide_ai_title">Скрыть функции ИИ</string>
     <string name="settings_hide_ai_subtitle">Скрывает необязательную помощь ИИ в отладке</string>
     <string name="settings_info_boot_ads_title">Спонсорские экраны загрузки</string>
-    <string name="settings_info_boot_ads_subtitle">Если оставить это включённым, вы поддержите разработку GameNative. Это никогда не замедляет запуск игр и никак на вас не влияет.</string>
+    <string name="settings_info_boot_ads_subtitle">Если оставить это включённым, вы поддержите разработку WoW Forever. Это никогда не замедляет запуск игр и никак на вас не влияет.</string>
     <string name="settings_info_boot_recs_title">Рекомендации игр на экранах загрузки</string>
     <string name="settings_info_boot_recs_subtitle">Показывать игру, которая может вам понравиться, во время запуска, если нет карточки спонсора.</string>
     <string name="boot_rec_badge">Рекомендовано для вас</string>

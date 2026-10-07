@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.winlator.xenvironment.ImageFs;
 
-import app.gamenative.R;
-import app.gamenative.powercontrol.metrics.FrameTimeRing;
+import com.wowforever.R;
+import com.wowforever.powercontrol.metrics.FrameTimeRing;
 import timber.log.Timber;
 
 import java.io.File;

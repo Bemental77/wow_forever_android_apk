@@ -50,14 +50,14 @@ public class Container {
     public static final String DEFAULT_WINCOMPONENTS = "direct3d=1,directsound=1,directinput8=0,directinput=0,directmusic=0,directshow=0,directplay=0,vcrun2010=1,wmdecoder=1,opengl=0";
     public static final String FALLBACK_WINCOMPONENTS = "direct3d=1,directsound=1,directinput8=0,directinput=0,directmusic=1,directshow=1,directplay=1,vcrun2010=1,wmdecoder=1,opengl=0";
     public static final String[] MEDIACONV_ENV_VARS = {
-            "MEDIACONV_AUDIO_DUMP_FILE=/data/data/app.gamenative/files/imagefs/home/xuser/audio.dmp",
-            "MEDIACONV_VIDEO_DUMP_FILE=/data/data/app.gamenative/files/imagefs/home/xuser/video.dmp",
-            "MEDIACONV_VIDEO_TRANSCODED_FILE=/data/data/app.gamenative/files/imagefs/home/xuser/transcoded.mkv",
-            "MEDIACONV_AUDIO_TRANSCODED_FILE=/data/data/app.gamenative/files/imagefs/home/xuser/transcoded.wav",
-            "MEDIACONV_BLANK_AUDIO_FILE=/data/data/app.gamenative/files/imagefs/home/xuser/blank.wav",
-            "MEDIACONV_BLANK_VIDEO_FILE=/data/data/app.gamenative/files/imagefs/home/xuser/blank.mkv",
+            "MEDIACONV_AUDIO_DUMP_FILE=/data/data/com.wowforever/files/imagefs/home/xuser/audio.dmp",
+            "MEDIACONV_VIDEO_DUMP_FILE=/data/data/com.wowforever/files/imagefs/home/xuser/video.dmp",
+            "MEDIACONV_VIDEO_TRANSCODED_FILE=/data/data/com.wowforever/files/imagefs/home/xuser/transcoded.mkv",
+            "MEDIACONV_AUDIO_TRANSCODED_FILE=/data/data/com.wowforever/files/imagefs/home/xuser/transcoded.wav",
+            "MEDIACONV_BLANK_AUDIO_FILE=/data/data/com.wowforever/files/imagefs/home/xuser/blank.wav",
+            "MEDIACONV_BLANK_VIDEO_FILE=/data/data/com.wowforever/files/imagefs/home/xuser/blank.mkv",
     };
-    public static final String DEFAULT_DRIVES = "D:"+Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"E:/data/data/app.gamenative/storage";
+    public static final String DEFAULT_DRIVES = "D:"+Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"E:/data/data/com.wowforever/storage";
     public static final String DEFAULT_VARIANT = DefaultVersion.VARIANT;
     public static final String DEFAULT_WINE_VERSION = DefaultVersion.WINE_VERSION;
     public static final byte STARTUP_SELECTION_NORMAL = 0;
@@ -94,7 +94,7 @@ public class Container {
     private String drives = DEFAULT_DRIVES;
     private String wineVersion = WineInfo.MAIN_WINE_VERSION.identifier();
     private boolean showFPS;
-    private boolean launchImmersiveMode = app.gamenative.BuildConfig.XR_BUILD;
+    private boolean launchImmersiveMode = com.wowforever.BuildConfig.XR_BUILD;
     private boolean launchRealSteam;
     private boolean launchBionicSteam;
     private boolean allowSteamUpdates;
@@ -141,7 +141,7 @@ public class Container {
     // Disable external mouse input
     private boolean disableMouseInput = false;
     // Touchscreen mode (defaults on for XR builds)
-    private boolean touchscreenMode = app.gamenative.BuildConfig.XR_BUILD;
+    private boolean touchscreenMode = com.wowforever.BuildConfig.XR_BUILD;
     // Shooter mode
     private boolean shooterMode = true;
     // Serialised JSON gesture configuration (used when touchscreenMode is true)

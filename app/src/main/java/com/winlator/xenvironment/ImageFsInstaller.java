@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import app.gamenative.BuildConfig;
-import app.gamenative.R;
-import app.gamenative.enums.Marker;
-import app.gamenative.service.SteamService;
-import app.gamenative.utils.ContainerUtils;
-import app.gamenative.utils.MarkerUtils;
-import app.gamenative.utils.downloader.ContainerFilesDownloaderKt;
-import app.gamenative.utils.downloader.ProgressCallback;
+import com.wowforever.BuildConfig;
+import com.wowforever.R;
+import com.wowforever.enums.Marker;
+import com.wowforever.service.SteamService;
+import com.wowforever.utils.ContainerUtils;
+import com.wowforever.utils.MarkerUtils;
+import com.wowforever.utils.downloader.ContainerFilesDownloaderKt;
+import com.wowforever.utils.downloader.ProgressCallback;
 
 // import com.winlator.MainActivity;
 // import com.winlator.R;
@@ -211,7 +211,7 @@ public abstract class ImageFsInstaller {
         ensureBionicLib(ctx, imagefs);
 
         // Extract extras.tzst - download from server for modern variant, use bundled assets for legacy
-        if (app.gamenative.BuildConfig.MODERN_ANDROID) {
+        if (com.wowforever.BuildConfig.MODERN_ANDROID) {
             try {
                 // Modern variant: download and extract
                 java.io.File extrasFile = ContainerFilesDownloaderKt.ensureContainerFileAvailableBlocking(

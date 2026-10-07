@@ -61,7 +61,7 @@
             default taskAffinity with their main activity for the same reason.
         -->
         <activity
-            android:name="app.gamenative.ui.screen.xr.ImmersiveXrActivity"
+            android:name="com.wowforever.ui.screen.xr.ImmersiveXrActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="false"

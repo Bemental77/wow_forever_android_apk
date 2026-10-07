@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "app.gamenative",
+  "applicationId": "com.wowforever",
   "variantName": "release-signed",
   "elements": [
     {

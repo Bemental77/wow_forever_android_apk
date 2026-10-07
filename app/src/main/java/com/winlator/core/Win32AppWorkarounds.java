@@ -1,6 +1,6 @@
 package com.winlator.core;
 
-import app.gamenative.powercontrol.PowerManager;
+import com.wowforever.powercontrol.PowerManager;
 import com.winlator.core.envvars.EnvVars;
 import com.winlator.winhandler.WinHandler;
 import com.winlator.xserver.ScreenInfo;

@@ -38,7 +38,7 @@ val copyDebugManifest by tasks.registering(Copy::class) {
 }
 
 android {
-    namespace = "app.gamenative"
+    namespace = "com.wowforever"
     compileSdk = 36
 
     // https://developer.android.com/ndk/downloads
@@ -56,7 +56,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "app.gamenative"
+        applicationId = "com.wowforever"
 
         minSdk = 26
 
@@ -179,21 +179,6 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             signingConfig = signingConfigs.getByName("pluvia")
-        }
-        create("release-gold") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("pluvia")
-            applicationIdSuffix = ".gold"
-            buildConfigField("boolean", "GOLD", "true")
-            val iconValue = "@mipmap/ic_launcher_gold"
-            val iconRoundValue = "@mipmap/ic_launcher_gold_round"
-            manifestPlaceholders.putAll(
-                mapOf(
-                    "icon" to iconValue,
-                    "roundIcon" to iconRoundValue,
-                ),
-            )
         }
     }
 

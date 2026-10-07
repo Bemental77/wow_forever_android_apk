@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-07",
+  "items": {
+    "fexcore": [
+      {
+        "id": "2609-0",
+        "name": "FEX 2609",
+        "url": "https://github.com/Bemental77/wow_forever_android_apk/releases/download/runtime-v1/FEXCore-2609.wcp",
+        "variant": "bionic"
+      }
+    ]
+  }
+}

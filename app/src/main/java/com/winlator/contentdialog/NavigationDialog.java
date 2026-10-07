@@ -19,7 +19,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.navigation.NavigationView;
-import app.gamenative.R;
+import com.wowforever.R;
 import com.winlator.inputcontrols.ControllerManager;
 
 public class NavigationDialog extends ContentDialog {

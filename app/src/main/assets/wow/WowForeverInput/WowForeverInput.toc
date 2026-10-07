@@ -1,0 +1,6 @@
+## Interface: 11507, 11506, 20504, 30403, 40402, 50500, 110002, 110105
+## Title: WowForever Input
+## Notes: Signals text-field focus to the WowForever Android app.
+## Version: 1
+
+WowForeverInput.lua

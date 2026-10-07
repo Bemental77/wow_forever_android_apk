@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.Surface;
 
-import app.gamenative.R;
+import com.wowforever.R;
 import android.graphics.Rect;
 import timber.log.Timber;
 

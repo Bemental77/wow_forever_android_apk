@@ -17,7 +17,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import app.gamenative.ui.screen.auth.EpicOAuthActivity;
+import com.wowforever.ui.screen.auth.EpicOAuthActivity;
 
 public class WineRequestComponent extends EnvironmentComponent {
     abstract class RequestCodes {

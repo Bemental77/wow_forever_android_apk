@@ -769,7 +769,7 @@
     <string name="custom_game_importing">Importing game…</string>
     <string name="custom_game_import_success">Game imported</string>
     <string name="custom_game_import_failed">Import failed</string>
-    <string name="custom_game_import_dialog_message">Select the folder containing the game. It will be imported into GameNative\'s storage so it can run without any storage permission. Large games may take a few minutes.</string>
+    <string name="custom_game_import_dialog_message">Select the folder containing the game. It will be imported into WoW Forever\'s storage so it can run without any storage permission. Large games may take a few minutes.</string>
     <string name="custom_game_import_remove_original">Remove original after import</string>
     <string name="base_app_shortcut_created">Shortcut created</string>
     <string name="base_app_shortcut_failed">Failed to create shortcut: %s</string>
@@ -1134,17 +1134,17 @@
     <string name="settings_info_send_tip_title">Become a member</string>
     <string name="settings_info_send_tip_subtitle">Early access to releases, priority help, and more</string>
     <string name="settings_info_ask_tip_title">Membership offers</string>
-    <string name="settings_info_ask_tip_subtitle">Show occasional offers to become a GameNative member</string>
+    <string name="settings_info_ask_tip_subtitle">Show occasional offers to become a WoW Forever member</string>
     <string name="settings_info_source_title">Source code</string>
     <string name="settings_info_source_subtitle">View the source code of this project</string>
     <string name="settings_info_libraries_title">Libraries Used</string>
-    <string name="settings_info_libraries_subtitle">See what technologies make GameNative possible</string>
+    <string name="settings_info_libraries_subtitle">See what technologies make WoW Forever possible</string>
     <string name="settings_info_privacy_title">Privacy Policy</string>
-    <string name="settings_info_privacy_subtitle">Opens a link to GameNative\'s privacy policy</string>
+    <string name="settings_info_privacy_subtitle">Opens a link to WoW Forever\'s privacy policy</string>
     <string name="settings_hide_ai_title">Hide AI features</string>
     <string name="settings_hide_ai_subtitle">Hides the optional AI debugging help</string>
     <string name="settings_info_boot_ads_title">Sponsored loading screens</string>
-    <string name="settings_info_boot_ads_subtitle">Keeping this on helps support GameNative\'s development. It never slows down game launches or affects you in any way.</string>
+    <string name="settings_info_boot_ads_subtitle">Keeping this on helps support WoW Forever\'s development. It never slows down game launches or affects you in any way.</string>
     <string name="settings_info_boot_recs_title">Game recommendations on loading screens</string>
     <string name="settings_info_boot_recs_subtitle">Show a game you might like while a game boots, when there is no sponsor card.</string>
     <string name="settings_info_usage_analytics_title">Usage analytics</string>
@@ -1231,7 +1231,7 @@
     <string name="container_storage_unknown_error">Unknown error</string>
 
     <!-- Login Screen -->
-    <string name="login_app_name">GameNative</string>
+    <string name="login_app_name">WoW Forever</string>
     <string name="login_privacy_policy">Privacy Policy</string>
     <string name="login_welcome_back">Welcome Back</string>
     <string name="login_subtitle">Sign in to access your Steam library</string>
@@ -1313,13 +1313,13 @@
     <!-- PluviaMain: Crash & Support -->
     <string name="main_recent_crash_title">Recent Crash</string>
     <string name="main_recent_crash_message">Sorry about that!\nIt would be nice to know about the recent issue you\'ve had.\nYou can view and export the most recent crash log in the app\'s settings and attach it as a Github issue in the project\'s repository.\nLink to the Github repo is also in settings!</string>
-    <string name="main_thank_you_title">Enjoying GameNative?</string>
+    <string name="main_thank_you_title">Enjoying WoW Forever?</string>
     <string name="main_thank_you_message">Become a member today. Members get:\n\n• Early access to new releases\n• Priority help getting your games running\n• Premium roles and exclusive channels on Discord\n• …and more\n\nFrom $5/month</string>
     <string name="main_join_kofi">Become a member</string>
     <string name="pitch_session_title">Enjoying %1$s?</string>
     <string name="pitch_five_star_title">Glad %1$s ran great!</string>
     <string name="main_share">Share</string>
-    <string name="main_share_text">Check out GameNative - play your PC Steam games on Android, with full support for cloud saves!\nhttps://gamenative.app\nJoin the community: https://discord.gg/2hKv4VfZfE</string>
+    <string name="main_share_text">Check out WoW Forever - play your PC Steam games on Android, with full support for cloud saves!</string>
     <string name="main_discord_support_title">Did the game work?</string>
     <string name="main_discord_support_message">Join the Discord to get support to fix your game or improve performance.</string>
     <string name="main_open_discord">Open Discord</string>
@@ -1479,7 +1479,7 @@
     <string name="community_config_gpu">GPU</string>
     <string name="community_config_android">Android</string>
     <string name="community_config_soc">SoC</string>
-    <string name="community_config_app_version">GameNative version</string>
+    <string name="community_config_app_version">WoW Forever version</string>
     <string name="community_config_submitted">Submitted</string>
     <string name="community_config_session_length">Session length</string>
     <string name="community_config_game_store">Game store</string>
@@ -1685,7 +1685,7 @@
     <string name="wine_proton_install_failed">Failed to install: %s</string>
     <string name="wine_proton_install_error">Installation error: %s</string>
     <string name="wine_proton_install_success">%1$s %2$s installed successfully</string>
-    <string name="wine_proton_glibc_incompatible">This Wine/Proton build requires GLIBC containers and is not compatible with GameNative. Please use ARM64/bionic builds only.</string>
+    <string name="wine_proton_glibc_incompatible">This Wine/Proton build requires GLIBC containers and is not compatible with WoW Forever. Please use ARM64/bionic builds only.</string>
     <string name="wine_proton_containers_in_use">Containers using this version:</string>
     <string name="wine_proton_no_containers_warning">No containers are currently using this version.</string>
     <string name="wine_proton_containers_will_break">These containers will no longer work if you proceed:</string>
@@ -1850,27 +1850,27 @@
     <string name="nexus_oauth_disconnect">Disconnect</string>
     <string name="nexus_oauth_disconnecting">Disconnecting from Nexus Mods…</string>
     <string name="nexus_oauth_disconnect_title">Disconnect Nexus Mods?</string>
-    <string name="nexus_oauth_disconnect_message">GameNative will revoke this account’s Nexus tokens on this device. Installed mods and local files will not be removed.</string>
+    <string name="nexus_oauth_disconnect_message">WoW Forever will revoke this account’s Nexus tokens on this device. Installed mods and local files will not be removed.</string>
     <string name="nexus_oauth_disconnected">Nexus Mods account disconnected.</string>
     <string name="nexus_oauth_sign_in_failed">Nexus Mods sign-in did not complete. Try connecting again.</string>
     <string name="nexus_oauth_disconnect_failed">Could not disconnect the Nexus Mods account. Try again.</string>
     <string name="nexus_oauth_browser_failed">Could not open a browser for Nexus Mods sign-in.</string>
-    <string name="nexus_oauth_invalid_callback">GameNative rejected an invalid Nexus Mods sign-in response.</string>
+    <string name="nexus_oauth_invalid_callback">WoW Forever rejected an invalid Nexus Mods sign-in response.</string>
     <string name="nexus_oauth_sign_in_required">Connect a Nexus Mods account before using online Nexus features.</string>
     <string name="nexus_oauth_session_unavailable">Nexus authorization is temporarily unavailable. Try again.</string>
-    <string name="nexus_integration_temporarily_unavailable">Nexus Mods support has been temporarily disabled while GameNative is being registered with Nexus Mods. Existing installed mods can still be managed.</string>
-    <string name="nexus_invalid_nxm_callback">This Nexus authorization is invalid, expired, already used, or no longer matches an active GameNative request. Start the download from Manage Nexus Mods again.</string>
+    <string name="nexus_integration_temporarily_unavailable">Nexus Mods support has been temporarily disabled while WoW Forever is being registered with Nexus Mods. Existing installed mods can still be managed.</string>
+    <string name="nexus_invalid_nxm_callback">This Nexus authorization is invalid, expired, already used, or no longer matches an active WoW Forever request. Start the download from Manage Nexus Mods again.</string>
     <string name="nexus_nxm_callback_received">Nexus download authorization received. Return to Manage Nexus Mods if the download does not resume automatically.</string>
     <string name="nexus_nxm_no_active_target">Open Manage Nexus Mods for the destination game, then tap Mod Manager Download on Nexus Mods again.</string>
-    <string name="nexus_nxm_ambiguous_target">GameNative cannot safely choose between multiple open mod dialogs. Close the extra dialog and try Mod Manager Download again.</string>
+    <string name="nexus_nxm_ambiguous_target">WoW Forever cannot safely choose between multiple open mod dialogs. Close the extra dialog and try Mod Manager Download again.</string>
     <string name="nexus_nxm_file_not_found">Nexus authorized a file that is no longer available for this mod. Request the download again.</string>
-    <string name="nexus_authorize_in_browser">Nexus requires website confirmation for this account. In the browser, choose Download with Manager and then Slow Download; GameNative will resume automatically.</string>
+    <string name="nexus_authorize_in_browser">Nexus requires website confirmation for this account. In the browser, choose Download with Manager and then Slow Download; WoW Forever will resume automatically.</string>
     <string name="nexus_open_browser_failed">Could not open Nexus Mods in a browser.</string>
     <string name="nexus_authorization_timed_out">Nexus website authorization timed out. Retry the file and complete Download with Manager in the browser.</string>
     <string name="nexus_authorization_expired">The Nexus website download authorization expired. Open Nexus Mods and authorize the file again.</string>
-    <string name="nexus_authorization_already_pending">GameNative is already waiting for Nexus to authorize this file. Complete the browser download prompt or cancel and retry.</string>
-    <string name="nexus_authorized_file_received">Nexus authorized this file. Tap it to begin the GameNative download.</string>
-    <string name="nexus_authorization_wrong_account">The Nexus website authorization belongs to a different account. Sign into the same Nexus account in the browser and GameNative.</string>
+    <string name="nexus_authorization_already_pending">WoW Forever is already waiting for Nexus to authorize this file. Complete the browser download prompt or cancel and retry.</string>
+    <string name="nexus_authorized_file_received">Nexus authorized this file. Tap it to begin the WoW Forever download.</string>
+    <string name="nexus_authorization_wrong_account">The Nexus website authorization belongs to a different account. Sign into the same Nexus account in the browser and WoW Forever.</string>
     <string name="nexus_waiting_for_nexus">Waiting for Nexus website authorization</string>
     <string name="nexus_resume_requires_website_authorization">This download was interrupted. Tap Resume to authorize the file again on the Nexus Mods website.</string>
     <string name="nexus_waiting_for_website_authorization">Collection %1$d of %2$d: authorize %3$s on Nexus Mods</string>
@@ -2097,10 +2097,10 @@
     <string name="nexus_no_issues_found">No issues found</string>
     <string name="nexus_no_issues_description">Conflicts and plugin warnings will appear here.</string>
     <string name="nexus_overwrite_existing_title">Overwrite existing files?</string>
-    <string name="nexus_overwrite_existing_message">GameNative will back up existing files before replacing them.</string>
+    <string name="nexus_overwrite_existing_message">WoW Forever will back up existing files before replacing them.</string>
     <string name="nexus_backup_overwrite">Back Up &amp; Overwrite</string>
     <string name="nexus_apply_mod_order_title">Apply mod order?</string>
-    <string name="nexus_apply_mod_order_message">GameNative will apply enabled mods from lowest to highest priority and back up replaced files.</string>
+    <string name="nexus_apply_mod_order_message">WoW Forever will apply enabled mods from lowest to highest priority and back up replaced files.</string>
     <string name="nexus_backup_apply">Back Up &amp; Apply</string>
     <string name="nexus_freed_size">Freed %1$s</string>
     <string name="nexus_storage_cleanup_failed">Storage cleanup failed</string>
@@ -2272,7 +2272,7 @@
     <string name="rec_teaser_title">Discover games for your device</string>
     <string name="rec_teaser_subtitle">Tap to take a look</string>
     <string name="settings_interface_show_recommendations_title">Show game recommendations</string>
-    <string name="settings_interface_show_recommendations_subtitle">Show personalized recommendations. Keeping this on helps support GameNative.</string>
+    <string name="settings_interface_show_recommendations_subtitle">Show personalized recommendations. Keeping this on helps support WoW Forever.</string>
     <string name="settings_interface_show_hidden_games_title">Show hidden games by default</string>
     <string name="settings_interface_show_hidden_games_subtitle">Hidden Steam and GOG games stay visible unless you turn this off. Selecting the Hidden Steam collection always shows hidden Steam games.</string>
 
@@ -2372,7 +2372,7 @@
     <string name="local_mod_folder_counts">%1$s, %2$s</string>
     <string name="local_mod_name">Mod name</string>
     <string name="local_mod_version_optional">Version (optional)</string>
-    <string name="local_mod_snapshot_notice">GameNative copies a private snapshot and treats it as untrusted content. Executables and installer scripts are never run during import.</string>
+    <string name="local_mod_snapshot_notice">WoW Forever copies a private snapshot and treats it as untrusted content. Executables and installer scripts are never run during import.</string>
     <string name="local_mod_import">Import mod</string>
     <string name="local_mod_archive_source">Local archive</string>
     <string name="local_mod_files_source">Local files</string>
@@ -2382,8 +2382,8 @@
     <string name="local_mod_imported">Local mod imported</string>
     <string name="local_mod_duplicate">This content is already managed as %1$s. Opened the existing mod.</string>
     <string name="local_mod_name_required">Enter a name for this mod.</string>
-    <string name="local_mod_unreadable">GameNative could not read the selected content.</string>
-    <string name="local_mod_unreadable_file">GameNative could not read %1$s.</string>
+    <string name="local_mod_unreadable">WoW Forever could not read the selected content.</string>
+    <string name="local_mod_unreadable_file">WoW Forever could not read %1$s.</string>
     <string name="local_mod_empty">The selected file is empty.</string>
     <string name="local_mod_empty_folder">The selected folder does not contain any files.</string>
     <string name="local_mod_invalid_archive">The selected archive could not be read safely. It may be corrupt, encrypted, multipart, unsupported, or contain unsafe paths.</string>
@@ -2409,7 +2409,7 @@
     <string name="local_mod_import_status_copying">Copying</string>
     <string name="local_mod_copied_progress">Copied %1$s of %2$s</string>
     <string name="nexus_invalid_source_metadata">This managed mod has incomplete source information and cannot be retried.</string>
-    <string name="nexus_archive_memory_error">Archive needs more memory than Android allows. Retry after updating GameNative or choose a smaller file.</string>
+    <string name="nexus_archive_memory_error">Archive needs more memory than Android allows. Retry after updating WoW Forever or choose a smaller file.</string>
 
     <!-- Steam achievements -->
     <string name="achievements">Achievements</string>

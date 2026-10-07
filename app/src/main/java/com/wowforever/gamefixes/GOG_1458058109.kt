@@ -1,0 +1,15 @@
+package com.wowforever.gamefixes
+
+import com.wowforever.data.GameSource
+
+/**
+ * The Elder Scrolls IV: Oblivion (GOG)
+ */
+val GOG_Fix_1458058109: KeyedGameFix = KeyedRegistryKeyFix(
+    gameSource = GameSource.GOG,
+    gameId = "1458058109",
+    registryKey = "Software\\Wow6432Node\\Bethesda Softworks\\Oblivion",
+    defaultValues = mapOf(
+        "Installed Path" to INSTALL_PATH_PLACEHOLDER,
+    ),
+)

@@ -89,22 +89,22 @@
                 <!-- Relay redirects here after the user links their Discord account. -->
                 <data
                     android:host="discord-linked"
-                    android:scheme="gamenative" />
+                    android:scheme="wowforever" />
             </intent-filter>
             <intent-filter>
                 <!-- WoW Forever launch targets (static shortcuts) -->
-                <action android:name="app.gamenative.wow.ACTION" />
+                <action android:name="com.wowforever.ACTION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="app.gamenative.LAUNCH_GAME" />
+                <action android:name="com.wowforever.LAUNCH_GAME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="gamenative" android:host="run" />
+                <data android:scheme="wowforever" android:host="run" />
             </intent-filter>
 
             <!--Allows app window to be resized on Oculus Quest VR headsets-->
@@ -134,7 +134,7 @@
                 <data
                     android:host="oauth"
                     android:path="/callback"
-                    android:scheme="app.gamenative" />
+                    android:scheme="com.wowforever" />
             </intent-filter>
         </activity>
 
@@ -206,7 +206,7 @@
 
         <!--
             Handles the Exit action on foreground-service notifications.
-            See app.gamenative.service.NotificationActionReceiver for the rationale —
+            See com.wowforever.service.NotificationActionReceiver for the rationale —
             routing through a broadcast avoids the FGS contract that would otherwise
             crash the app when Exit is tapped on a notification whose owning service
             isn't currently running.

@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import app.gamenative.powercontrol.PowerManager;
+import com.wowforever.powercontrol.PowerManager;
 
 public class XEnvironment implements Iterable<EnvironmentComponent> {
     private final Context context;

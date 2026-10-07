@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- WoW Forever static long-press shortcuts.
-     ${applicationId} is not substituted in res/xml, so the package is hardcoded (applicationId = app.gamenative). -->
+<!-- Static shortcuts. Package is hardcoded: ${applicationId} isn't substituted in res/xml. -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:shortcutId="wow_play"
@@ -9,9 +8,9 @@
         android:shortcutShortLabel="@string/wow_shortcut_play"
         android:shortcutLongLabel="@string/wow_shortcut_play">
         <intent
-            android:action="app.gamenative.wow.ACTION"
-            android:targetPackage="app.gamenative"
-            android:targetClass="app.gamenative.MainActivity">
+            android:action="com.wowforever.ACTION"
+            android:targetPackage="com.wowforever"
+            android:targetClass="com.wowforever.MainActivity">
             <extra android:name="target" android:value="PLAY" />
         </intent>
     </shortcut>
@@ -22,9 +21,9 @@
         android:shortcutShortLabel="@string/wow_shortcut_play_bnet_short"
         android:shortcutLongLabel="@string/wow_shortcut_play_bnet">
         <intent
-            android:action="app.gamenative.wow.ACTION"
-            android:targetPackage="app.gamenative"
-            android:targetClass="app.gamenative.MainActivity">
+            android:action="com.wowforever.ACTION"
+            android:targetPackage="com.wowforever"
+            android:targetClass="com.wowforever.MainActivity">
             <extra android:name="target" android:value="PLAY_VIA_BNET" />
         </intent>
     </shortcut>
@@ -35,9 +34,9 @@
         android:shortcutShortLabel="@string/wow_shortcut_bnet"
         android:shortcutLongLabel="@string/wow_shortcut_bnet">
         <intent
-            android:action="app.gamenative.wow.ACTION"
-            android:targetPackage="app.gamenative"
-            android:targetClass="app.gamenative.MainActivity">
+            android:action="com.wowforever.ACTION"
+            android:targetPackage="com.wowforever"
+            android:targetClass="com.wowforever.MainActivity">
             <extra android:name="target" android:value="BNET" />
         </intent>
     </shortcut>
@@ -48,9 +47,9 @@
         android:shortcutShortLabel="@string/wow_shortcut_menu"
         android:shortcutLongLabel="@string/wow_shortcut_menu">
         <intent
-            android:action="app.gamenative.wow.ACTION"
-            android:targetPackage="app.gamenative"
-            android:targetClass="app.gamenative.MainActivity">
+            android:action="com.wowforever.ACTION"
+            android:targetPackage="com.wowforever"
+            android:targetClass="com.wowforever.MainActivity">
             <extra android:name="target" android:value="MENU" />
         </intent>
     </shortcut>

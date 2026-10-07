@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.util.Log;
 
 // import com.winlator.R;
-import app.gamenative.R;
-import app.gamenative.utils.downloader.ContainerFilesDownloaderKt;
-import app.gamenative.utils.downloader.ProgressCallback;
+import com.wowforever.R;
+import com.wowforever.utils.downloader.ContainerFilesDownloaderKt;
+import com.wowforever.utils.downloader.ProgressCallback;
 import com.winlator.box86_64.Box86_64Preset;
 import com.winlator.contents.ContentsManager;
 import com.winlator.core.Callback;

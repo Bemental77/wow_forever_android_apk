@@ -3,7 +3,7 @@ package com.winlator.core;
 import android.os.Process;
 import android.util.Log;
 
-import app.gamenative.BuildConfig;
+import com.wowforever.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.File;

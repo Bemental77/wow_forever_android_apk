@@ -7,7 +7,7 @@ import android.media.Image;
 import android.os.Process;
 import android.util.Log;
 
-import app.gamenative.BuildConfig;
+import com.wowforever.BuildConfig;
 import com.winlator.PrefManager;
 import com.winlator.box86_64.Box86_64Preset;
 import com.winlator.box86_64.Box86_64PresetManager;
@@ -33,9 +33,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 
-import app.gamenative.PluviaApp;
-import app.gamenative.events.AndroidEvent;
-import app.gamenative.service.SteamService;
+import com.wowforever.PluviaApp;
+import com.wowforever.events.AndroidEvent;
+import com.wowforever.service.SteamService;
 
 public class GlibcProgramLauncherComponent extends GuestProgramLauncherComponent {
     private String guestExecutable;

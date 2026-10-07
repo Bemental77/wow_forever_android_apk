@@ -27,9 +27,9 @@ import android.util.SparseBooleanArray;
 import androidx.compose.ui.input.pointer.PointerIcon;
 import androidx.core.graphics.ColorUtils;
 
-import app.gamenative.R;
-import app.gamenative.data.GyroSettings;
-import app.gamenative.data.ShooterModeConfig;
+import com.wowforever.R;
+import com.wowforever.data.GyroSettings;
+import com.wowforever.data.ShooterModeConfig;
 import com.winlator.inputcontrols.Binding;
 import com.winlator.inputcontrols.BindingCombo;
 import com.winlator.inputcontrols.ControlElement;
@@ -1068,8 +1068,8 @@ public class InputControlsView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
         float textY = rect.centerY() - (paint.descent() + paint.ascent()) * 0.5f;
         String label = getContext().getString(containerShooterModeRuntime
-                ? app.gamenative.R.string.shooter_mode_on
-                : app.gamenative.R.string.shooter_mode_off);
+                ? com.wowforever.R.string.shooter_mode_on
+                : com.wowforever.R.string.shooter_mode_off);
         canvas.drawText(label, rect.centerX(), textY, paint);
     }
 

@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.view.Surface;
 import android.widget.Toast;
 
-import app.gamenative.R;
+import com.wowforever.R;
 import com.winlator.widget.FrameRating;
 import com.winlator.widget.XServerRendererView;
 import com.winlator.widget.XServerView;
@@ -84,7 +84,7 @@ public class VulkanRenderer implements WindowManager.OnWindowModificationListene
 
     /** See VulkanXrFrameBridge's kdoc — null except for the Meta Quest immersive path. */
     public void setVulkanXrFrameBridge(VulkanXrFrameBridge xrFrameBridge) {
-        if (!app.gamenative.BuildConfig.XR_BUILD) return;
+        if (!com.wowforever.BuildConfig.XR_BUILD) return;
         this.xrFrameBridge = xrFrameBridge;
         synchronized (lock) {
             if (xrFrameBridge == null) {
@@ -501,6 +501,7 @@ public class VulkanRenderer implements WindowManager.OnWindowModificationListene
         int rx = window.getRootX() + xOff;
         int ry = window.getRootY() + yOff;
         synchronized (pixmap.renderLock) {
+            TextFocusProbe.onPresent(window, pixmap);
             Texture texture = pixmap.getTexture();
             if (texture instanceof GPUImage) {
                 GPUImage g = (GPUImage) texture;
@@ -560,6 +561,7 @@ public class VulkanRenderer implements WindowManager.OnWindowModificationListene
         long drawableId = did(drawable);
 
         synchronized (drawable.renderLock) {
+            TextFocusProbe.onPresent(window, drawable);
             if (drawable.getTexture() instanceof GPUImage) {
                 GPUImage g = (GPUImage) drawable.getTexture();
                 long ahbPtr = g.getHardwareBufferPtr();

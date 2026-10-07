@@ -1,6 +1,6 @@
 package com.winlator.widget
 
-import app.gamenative.data.GyroSettings
+import com.wowforever.data.GyroSettings
 import com.winlator.inputcontrols.Binding
 import com.winlator.inputcontrols.BindingCombo
 import com.winlator.inputcontrols.ControlElement

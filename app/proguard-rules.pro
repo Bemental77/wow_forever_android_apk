@@ -35,7 +35,7 @@
 
 # Timber Logging
 -keep class timber.log.Timber { *; }
--keep class app.gamenative.ReleaseTree { *; }
+-keep class com.wowforever.ReleaseTree { *; }
 
 -keep class horizon.** { *; }
 -keep class com.meta.horizon.** { *; }

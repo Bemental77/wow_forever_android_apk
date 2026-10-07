@@ -1,6 +1,6 @@
 package com.winlator.renderer;
 
-/** Optional collaborator for {@link GLRenderer}, set only by the Meta Quest immersive launch path (see app.gamenative.ui.screen.xr) — null (the default). */
+/** Optional collaborator for {@link GLRenderer}, set only by the Meta Quest immersive launch path (see com.wowforever.ui.screen.xr) — null (the default). */
 public interface XrFrameBridge {
     /**
      * Called at the very start of drawScene(), before any GL state is touched for this frame.

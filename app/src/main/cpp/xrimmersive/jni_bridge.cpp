@@ -44,7 +44,7 @@ NativeHandle *LiveHandle(jlong handlePtr) {
 extern "C" {
 
 JNIEXPORT jlong JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeCreate(JNIEnv *env, jclass, jobject activity,
+Java_com_wowforever_ui_screen_xr_XrNative_nativeCreate(JNIEnv *env, jclass, jobject activity,
                                                        jint quadWidth, jint quadHeight, jfloat refreshRate) {
     JavaVM *vm = nullptr;
     env->GetJavaVM(&vm);
@@ -62,14 +62,14 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeCreate(JNIEnv *env, jclass, jobj
 }
 
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeRequestStop(JNIEnv *, jclass, jlong handlePtr) {
+Java_com_wowforever_ui_screen_xr_XrNative_nativeRequestStop(JNIEnv *, jclass, jlong handlePtr) {
     std::lock_guard<std::mutex> lock(gHandleMutex);
     auto *handle = LiveHandle(handlePtr);
     if (handle != nullptr) handle->session->requestStop();
 }
 
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeJoinAndDestroy(JNIEnv *env, jclass, jlong handlePtr) {
+Java_com_wowforever_ui_screen_xr_XrNative_nativeJoinAndDestroy(JNIEnv *env, jclass, jlong handlePtr) {
     auto *handle = reinterpret_cast<NativeHandle *>(handlePtr);
     if (handle == nullptr) return;
     {
@@ -98,7 +98,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeJoinAndDestroy(JNIEnv *env, jcla
 // poll — a short press of the same button is still forwarded as a normal gamepad Start press,
 // see xr_immersive.cpp's syncControllerInputs().
 JNIEXPORT jboolean JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativePollSnapshot(JNIEnv *env, jclass, jlong handlePtr,
+Java_com_wowforever_ui_screen_xr_XrNative_nativePollSnapshot(JNIEnv *env, jclass, jlong handlePtr,
                                                               jintArray outButtons,
                                                               jfloatArray outAxes,
                                                               jfloatArray outHandPoses,
@@ -137,7 +137,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativePollSnapshot(JNIEnv *env, jclass
 }
 
 JNIEXPORT jboolean JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeWaitWindowsFrame(
+Java_com_wowforever_ui_screen_xr_XrNative_nativeWaitWindowsFrame(
     JNIEnv *env, jclass, jlong handlePtr, jlong afterSerial, jint timeoutMs,
     jlongArray outTiming, jfloatArray outViews, jfloatArray outInput, jintArray outFlags) {
     if (env->GetArrayLength(outTiming) < 12 || env->GetArrayLength(outViews) < 22 ||
@@ -229,7 +229,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeWaitWindowsFrame(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeIsWindowsStereoActive(
+Java_com_wowforever_ui_screen_xr_XrNative_nativeIsWindowsStereoActive(
     JNIEnv *, jclass, jlong handlePtr) {
     std::lock_guard<std::mutex> lock(gHandleMutex);
     auto *handle = LiveHandle(handlePtr);
@@ -237,7 +237,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeIsWindowsStereoActive(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeApplyWindowsHaptic(
+Java_com_wowforever_ui_screen_xr_XrNative_nativeApplyWindowsHaptic(
     JNIEnv *, jclass, jlong handlePtr, jint hand, jfloat amplitude, jlong duration,
     jfloat frequency) {
     std::lock_guard<std::mutex> lock(gHandleMutex);
@@ -248,7 +248,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeApplyWindowsHaptic(
 }
 
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeSetWindowsOverlayVisible(
+Java_com_wowforever_ui_screen_xr_XrNative_nativeSetWindowsOverlayVisible(
     JNIEnv *, jclass, jlong handlePtr, jboolean visible) {
     std::lock_guard<std::mutex> lock(gHandleMutex);
     auto *handle = LiveHandle(handlePtr);
@@ -259,7 +259,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeSetWindowsOverlayVisible(
 // frame (ARGB_8888 bitmap). Copies the pixels into the session's pending-frame buffer; the
 // render thread uploads them to the GPU and draws them into the quad layer on its own.
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeSubmitFrame(JNIEnv *env, jclass, jlong handlePtr,
+Java_com_wowforever_ui_screen_xr_XrNative_nativeSubmitFrame(JNIEnv *env, jclass, jlong handlePtr,
                                                              jobject bitmap) {
     AndroidBitmapInfo info;
     if (AndroidBitmap_getInfo(env, bitmap, &info) != ANDROID_BITMAP_RESULT_SUCCESS) return;
@@ -283,7 +283,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeSubmitFrame(JNIEnv *env, jclass,
 }
 
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeSetQuadTransform(JNIEnv *, jclass, jlong handlePtr,
+Java_com_wowforever_ui_screen_xr_XrNative_nativeSetQuadTransform(JNIEnv *, jclass, jlong handlePtr,
                                                                   jfloat x, jfloat y, jfloat z,
                                                                   jfloat width, jfloat height,
                                                                   jfloat contentScaleX,
@@ -295,7 +295,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeSetQuadTransform(JNIEnv *, jclas
 }
 
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeSetPassthroughEnabled(JNIEnv *, jclass,
+Java_com_wowforever_ui_screen_xr_XrNative_nativeSetPassthroughEnabled(JNIEnv *, jclass,
                                                                        jlong handlePtr,
                                                                        jboolean enabled) {
     std::lock_guard<std::mutex> lock(gHandleMutex);
@@ -307,7 +307,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeSetPassthroughEnabled(JNIEnv *, 
 // See DirectGLBridge.kt / GLRenderer.XrFrameBridge — hardwareBuffer is the same
 // android.hardware.HardwareBuffer GLRenderer is writing into on its own thread/context.
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeSetSharedGameBuffer(JNIEnv *env, jclass,
+Java_com_wowforever_ui_screen_xr_XrNative_nativeSetSharedGameBuffer(JNIEnv *env, jclass,
                                                                      jlong handlePtr,
                                                                      jobject hardwareBuffer) {
     if (hardwareBuffer == nullptr) return;
@@ -327,7 +327,7 @@ Java_app_gamenative_ui_screen_xr_XrNative_nativeSetSharedGameBuffer(JNIEnv *env,
 // setSharedGameBuffer()/importSharedBufferIfNeeded() don't care which renderer produced the
 // buffer.
 JNIEXPORT void JNICALL
-Java_app_gamenative_ui_screen_xr_XrNative_nativeSetSharedGameBufferPtr(JNIEnv *, jclass,
+Java_com_wowforever_ui_screen_xr_XrNative_nativeSetSharedGameBufferPtr(JNIEnv *, jclass,
                                                                         jlong handlePtr,
                                                                         jlong ahbPtr) {
     if (ahbPtr == 0) return;

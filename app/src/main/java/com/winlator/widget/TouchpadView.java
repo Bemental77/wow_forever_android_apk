@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import app.gamenative.data.TouchGestureConfig;
+import com.wowforever.data.TouchGestureConfig;
 import timber.log.Timber;
 
 import com.winlator.core.AppUtils;
@@ -2390,6 +2390,11 @@ public class TouchpadView extends View implements View.OnCapturedPointerListener
 
     public void setShowKeyboardCallback(Runnable callback) {
         this.showKeyboardCallback = callback;
+    }
+
+    /** Runs the same "Show Keyboard" path as the gesture. */
+    public void requestShowKeyboard() {
+        if (showKeyboardCallback != null) showKeyboardCallback.run();
     }
 
     public void setOpenRadialMenuCallback(OpenRadialMenuCallback callback) {

@@ -5,7 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.view.Surface
-import app.gamenative.data.GyroSettings
+import com.wowforever.data.GyroSettings
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

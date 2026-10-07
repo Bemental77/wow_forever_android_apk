@@ -9,7 +9,7 @@ import android.view.View;
 
 // import com.winlator.R;
 // import com.winlator.XrActivity;
-import app.gamenative.R;
+import com.wowforever.R;
 import com.winlator.math.Mathf;
 import com.winlator.math.XForm;
 import com.winlator.renderer.material.CursorMaterial;

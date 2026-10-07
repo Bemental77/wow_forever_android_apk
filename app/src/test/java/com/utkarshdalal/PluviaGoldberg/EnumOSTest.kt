@@ -1,6 +1,6 @@
-package app.gamenative
+package com.wowforever
 
-import app.gamenative.enums.OS
+import com.wowforever.enums.OS
 import java.util.EnumSet
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 
 import com.winlator.PrefManager;
 
-import app.gamenative.utils.LsfgVkManager;
+import com.wowforever.utils.LsfgVkManager;
 import com.winlator.box86_64.Box86_64Preset;
 import com.winlator.box86_64.Box86_64PresetManager;
 import com.winlator.container.Container;
@@ -50,10 +50,10 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.gamenative.BuildConfig;
-import app.gamenative.PluviaApp;
-import app.gamenative.events.AndroidEvent;
-import app.gamenative.service.SteamService;
+import com.wowforever.BuildConfig;
+import com.wowforever.PluviaApp;
+import com.wowforever.events.AndroidEvent;
+import com.wowforever.service.SteamService;
 
 public class BionicProgramLauncherComponent extends GuestProgramLauncherComponent {
     private String guestExecutable;
@@ -207,10 +207,10 @@ public class BionicProgramLauncherComponent extends GuestProgramLauncherComponen
             String memPath;
             if (i == 0) {
                 // Player 1 uses the original, non-numbered path that is known to work.
-                memPath = "/data/data/app.gamenative/files/imagefs/tmp/gamepad.mem";
+                memPath = "/data/data/com.wowforever/files/imagefs/tmp/gamepad.mem";
             } else {
                 // Players 2, 3, 4 use a 1-based index.
-                memPath = "/data/data/app.gamenative/files/imagefs/tmp/gamepad" + i + ".mem";
+                memPath = "/data/data/com.wowforever/files/imagefs/tmp/gamepad" + i + ".mem";
             }
 
             File memFile = new File(memPath);
@@ -554,7 +554,7 @@ public class BionicProgramLauncherComponent extends GuestProgramLauncherComponen
         envVars.put("SteamClientService", "127.0.0.1:57344");
 
         // C. Wine-side Steam identity for steam_helper / games
-        String username = app.gamenative.PrefManager.INSTANCE.getUsername();
+        String username = com.wowforever.PrefManager.INSTANCE.getUsername();
         if (username != null && !username.isEmpty()) {
             envVars.put("SteamUser", username);
             // Mirrors what the real Steam client publishes; some Steamworks
@@ -566,7 +566,7 @@ public class BionicProgramLauncherComponent extends GuestProgramLauncherComponen
         envVars.put("SteamPath", "C:\\Program Files (x86)\\Steam");
         envVars.put("ValvePlatformMutex", "c:\\Program Files (x86)\\Steam/");
 
-        long steamId64 = app.gamenative.PrefManager.INSTANCE.getSteamUserSteamId64();
+        long steamId64 = com.wowforever.PrefManager.INSTANCE.getSteamUserSteamId64();
         if (steamId64 != 0L) {
             envVars.put("STEAMID", Long.toString(steamId64));
         }
@@ -598,7 +598,7 @@ public class BionicProgramLauncherComponent extends GuestProgramLauncherComponen
         // resolves <HOME>/Steam/config/config.vdf etc. relative to it.
         String nativeHome = imageFs.wineprefix + "/drive_c/Program Files (x86)";
         // The Android-Steam build of libsteamclient.so ships inside our imagefs
-        // (e.g. /data/data/app.gamenative/files/imagefs/usr/lib/libsteamclient.so).
+        // (e.g. /data/data/com.wowforever/files/imagefs/usr/lib/libsteamclient.so).
         String libPath = new File(imageFs.getLibDir(), "libsteamclient.so").getAbsolutePath();
 
         File libFile = new File(libPath);
@@ -631,12 +631,12 @@ public class BionicProgramLauncherComponent extends GuestProgramLauncherComponen
         // the JWT-style token Steam issued during our app login; steamUserSteamId64
         // is the 64-bit SteamID. If any are missing we fall back to whatever
         // cached auto-logon libsteamclient.so can do on its own.
-        String accountName  = app.gamenative.PrefManager.INSTANCE.getUsername();
-        String refreshToken = app.gamenative.PrefManager.INSTANCE.getRefreshToken();
-        long   steamId64    = app.gamenative.PrefManager.INSTANCE.getSteamUserSteamId64();
+        String accountName  = com.wowforever.PrefManager.INSTANCE.getUsername();
+        String refreshToken = com.wowforever.PrefManager.INSTANCE.getRefreshToken();
+        long   steamId64    = com.wowforever.PrefManager.INSTANCE.getSteamUserSteamId64();
 
         try {
-            int rc = app.gamenative.SteamBootstrap.INSTANCE.start(
+            int rc = com.wowforever.SteamBootstrap.INSTANCE.start(
                     environment.getContext(),
                     libPath,
                     nativeHome,
@@ -659,7 +659,7 @@ public class BionicProgramLauncherComponent extends GuestProgramLauncherComponen
                     int appIdInt = Integer.parseInt(steamAppId);
                     Log.i("BionicProgramLauncherComponent",
                           "SteamBootstrap.prepareApp(" + appIdInt + ")");
-                    app.gamenative.SteamBootstrap.INSTANCE.prepareApp(appIdInt);
+                    com.wowforever.SteamBootstrap.INSTANCE.prepareApp(appIdInt);
                 } catch (NumberFormatException nfe) {
                     Log.w("BionicProgramLauncherComponent",
                           "steamAppId=" + steamAppId + " is not numeric; "

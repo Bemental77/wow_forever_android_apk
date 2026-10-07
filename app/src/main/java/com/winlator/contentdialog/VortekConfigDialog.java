@@ -3,7 +3,7 @@ package com.winlator.contentdialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.Spinner;
-import app.gamenative.R;
+import com.wowforever.R;
 import com.winlator.core.AppUtils;
 import com.winlator.core.GPUHelper;
 import com.winlator.core.KeyValueSet;

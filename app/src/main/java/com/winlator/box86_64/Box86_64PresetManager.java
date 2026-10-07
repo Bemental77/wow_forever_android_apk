@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
-import app.gamenative.R;
+import com.wowforever.R;
 import com.winlator.PrefManager;
 import com.winlator.core.envvars.EnvVars;
 

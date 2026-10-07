@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import app.gamenative.R;
+import com.wowforever.R;
 
 public class WineInfo implements Parcelable {
     public static final WineInfo MAIN_WINE_VERSION = new WineInfo("wine", "9.2", "x86_64");

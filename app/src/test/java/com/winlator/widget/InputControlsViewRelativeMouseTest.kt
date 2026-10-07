@@ -1,7 +1,7 @@
 package com.winlator.widget
 
 import androidx.test.core.app.ApplicationProvider
-import app.gamenative.data.ShooterModeConfig
+import com.wowforever.data.ShooterModeConfig
 import com.winlator.inputcontrols.ControlElement
 import com.winlator.inputcontrols.ControlsProfile
 import com.winlator.xserver.XServer

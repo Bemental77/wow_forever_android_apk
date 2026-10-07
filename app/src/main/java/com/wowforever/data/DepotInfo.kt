@@ -1,0 +1,34 @@
+package com.wowforever.data
+
+import com.wowforever.db.serializers.OsEnumSetSerializer
+import com.wowforever.db.serializers.SteamRealmSerializer
+import com.wowforever.enums.OS
+import com.wowforever.enums.OSArch
+import com.wowforever.enums.SteamRealm
+import com.wowforever.service.SteamService
+import java.util.EnumSet
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class DepotInfo(
+    val depotId: Int,
+    val dlcAppId: Int,
+    val optionalDlcId: Int = SteamService.INVALID_APP_ID,
+    val depotFromApp: Int,
+    val sharedInstall: Boolean,
+    @Serializable(with = OsEnumSetSerializer::class)
+    val osList: EnumSet<OS>,
+    val osArch: OSArch,
+    val manifests: Map<String, ManifestInfo>,
+    val encryptedManifests: Map<String, ManifestInfo>,
+    val language: String = "",
+    @Serializable(with = SteamRealmSerializer::class)
+    val realm: SteamRealm = SteamRealm.Unknown,
+    val systemDefined: Boolean = false,
+    val steamDeck: Boolean = false,
+) {
+    /** Windows or OS-untagged (neither Linux nor macOS) */
+    val isWindowsCompatible: Boolean
+        get() = osList.contains(OS.windows) ||
+            (!osList.contains(OS.linux) && !osList.contains(OS.macos))
+}
