@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wow_shortcut_play" translatable="false">Play WoW</string>
+    <string name="wow_shortcut_play_bnet_short" translatable="false">Play (auto-login)</string>
+    <string name="wow_shortcut_play_bnet" translatable="false">Play with auto-login (via Battle.net)</string>
+    <string name="wow_shortcut_bnet" translatable="false">Open Battle.net</string>
+    <string name="wow_shortcut_menu" translatable="false">WoW Forever menu</string>
+</resources>
