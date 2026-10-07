@@ -945,7 +945,10 @@ fun XServerScreen(
     fun startExitWatchForUnmappedGameWindow(window: Window) {
         val winHandler = xServerView?.getxServer()?.winHandler ?: return
         if (exitWatchJob?.isActive == true) return
-        val targetExecutable = extractExecutableBasename(container.executablePath)
+        // WoW (PLAY / PLAY_VIA_BNET): the session ends as soon as the WoW process is gone, even if Battle.net is left.
+        val exitWithWow = appId == com.wowforever.wow.Wow.APP_ID &&
+            container.getExtra(com.wowforever.wow.Wow.EXTRA_EXIT_WITH_WOW, "0") == "1"
+        val targetExecutable = if (exitWithWow) com.wowforever.wow.Wow.WOW_PROCESS else extractExecutableBasename(container.executablePath)
         if (!windowMatchesExecutable(window, targetExecutable)) return
 
         exitWatchJob = CoroutineScope(Dispatchers.IO).launch {
@@ -990,8 +993,10 @@ fun XServerScreen(
                         deferred.await()
                     }
                     if (snapshot != null) {
-                        val hasNonEssential = snapshot.any {
-                            !allowlist.contains(normalizeProcessName(it.name))
+                        val hasNonEssential = if (exitWithWow) {
+                            snapshot.any { normalizeProcessName(it.name) == targetExecutable }
+                        } else {
+                            snapshot.any { !allowlist.contains(normalizeProcessName(it.name)) }
                         }
                         if (!hasNonEssential) {
                             withContext(Dispatchers.Main) {

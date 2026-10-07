@@ -64,8 +64,8 @@ android {
         buildConfigField("boolean", "XR_BUILD", "false")
         buildConfigField("boolean", "MODERN_XR", "false")
 
-        versionCode = 23
-        versionName = "1.2.1-wow1"
+        versionCode = 100
+        versionName = "1.0.0"
 
         buildConfigField("boolean", "GOLD", "false")
         // WoW Forever: single-purpose World of Warcraft launcher build

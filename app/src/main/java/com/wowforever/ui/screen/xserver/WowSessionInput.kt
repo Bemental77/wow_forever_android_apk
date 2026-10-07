@@ -1,20 +1,28 @@
 package com.wowforever.ui.screen.xserver
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.hardware.input.InputManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.InputDevice
+import android.content.res.Resources
+import android.os.SystemClock
 import android.view.KeyEvent
+import android.view.MotionEvent
+import kotlin.math.abs
 import android.view.View
 import android.view.WindowInsets
+import android.view.WindowManager as WindowManagerLayout
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.winlator.container.Container
 import com.winlator.inputcontrols.ExternalController
 import com.winlator.renderer.TextFocusProbe
+import com.winlator.renderer.VulkanRenderer
 import com.winlator.xserver.Property
 import com.winlator.xserver.Window
 import com.winlator.xserver.WindowManager
@@ -67,17 +75,22 @@ object WowSessionInput {
         hideImeReceiver: () -> Unit,
     ) {
         val keyboard = AutoKeyboard(root, container, hideImeReceiver)
+        val imeShift = ImeShift(root)
         val controls = GamepadWatcher(root.context) { hasGamepad -> if (hasGamepad) hideControls() else showControls() }
         val listener = object : View.OnAttachStateChangeListener {
             override fun onViewAttachedToWindow(v: View) {
                 // Posted so it runs after XServerScreen's own initial show/hide of the controls.
                 v.post { if (v.isAttachedToWindow) controls.start() }
                 keyboard.start()
+                PluviaApp.touchpadView?.setTouchObserver { onTouchEvent(it) }
+                imeShift.start()
             }
 
             override fun onViewDetachedFromWindow(v: View) {
                 controls.stop()
                 keyboard.stop()
+                PluviaApp.touchpadView?.setTouchObserver(null)
+                imeShift.stop()
             }
         }
         root.addOnAttachStateChangeListener(listener)
@@ -89,6 +102,43 @@ object WowSessionInput {
         if (event.action != KeyEvent.ACTION_UP) return
         if (event.keyCode != KeyEvent.KEYCODE_ENTER && event.keyCode != KeyEvent.KEYCODE_NUMPAD_ENTER) return
         activeKeyboard?.onEnter()
+    }
+
+    /** Hides the soft keyboard now (drawer "Keyboard" toggle). */
+    fun hideKeyboard() {
+        activeKeyboard?.let { k -> k.root.post { k.hideIme() } }
+    }
+
+    private var downX = 0f
+    private var downY = 0f
+    private var downTime = 0L
+    private var tapCandidate = false
+
+    /** Called (via TouchpadView) for every touch that reaches the game; a plain tap may re-open the keyboard (see AutoKeyboard.onTap). */
+    fun onTouchEvent(event: MotionEvent) {
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                downX = event.x
+                downY = event.y
+                downTime = event.eventTime
+                tapCandidate = !isOnTouchControl(event.x, event.y)
+            }
+            MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_CANCEL -> tapCandidate = false
+            MotionEvent.ACTION_MOVE -> {
+                val slop = 16 * Resources.getSystem().displayMetrics.density
+                if (abs(event.x - downX) > slop || abs(event.y - downY) > slop) tapCandidate = false
+            }
+            MotionEvent.ACTION_UP -> {
+                if (tapCandidate && event.eventTime - downTime < 500) activeKeyboard?.onTap()
+                tapCandidate = false
+            }
+        }
+    }
+
+    private fun isOnTouchControl(x: Float, y: Float): Boolean {
+        val icView = PluviaApp.inputControlsView ?: return false
+        if (icView.visibility != View.VISIBLE || !icView.isShowTouchscreenControls) return false
+        return icView.profile?.elements?.any { it.containsPoint(x, y) } == true
     }
 
     private fun String.hasAny(hints: List<String>) = hints.any { contains(it, ignoreCase = true) }
@@ -184,12 +234,79 @@ object WowSessionInput {
         override fun onDestroyWindow(window: Window) { wm()?.let(::refresh) }
     }
 
+    /** Fits the game picture above the soft keyboard (letterboxed, top-aligned); touches follow via TouchpadView. */
+    private class ImeShift(private val root: View) {
+        private val handler = Handler(Looper.getMainLooper())
+        private var shift = 0
+        private var prevSoftInputMode: Int? = null
+        private val tick = object : Runnable {
+            override fun run() {
+                update()
+                handler.postDelayed(this, 50)
+            }
+        }
+
+        fun start() {
+            // adjustNothing: the IME never resizes the surface; API 30+ still reports IME insets.
+            if (Build.VERSION.SDK_INT >= 30 && prevSoftInputMode == null) {
+                activity()?.window?.let { w ->
+                    val prev = w.attributes.softInputMode
+                    prevSoftInputMode = prev
+                    w.setSoftInputMode(
+                        (prev and WindowManagerLayout.LayoutParams.SOFT_INPUT_MASK_ADJUST.inv()) or
+                            WindowManagerLayout.LayoutParams.SOFT_INPUT_ADJUST_NOTHING,
+                    )
+                }
+            }
+            handler.removeCallbacks(tick)
+            handler.post(tick)
+        }
+
+        fun stop() {
+            handler.removeCallbacks(tick)
+            apply(0)
+            prevSoftInputMode?.let { mode -> activity()?.window?.setSoftInputMode(mode) }
+            prevSoftInputMode = null
+        }
+
+        private fun activity(): Activity? {
+            var c: Context? = root.context
+            while (c is ContextWrapper) {
+                if (c is Activity) return c
+                c = c.baseContext
+            }
+            return null
+        }
+
+        private fun update() {
+            if (!root.isAttachedToWindow) return
+            val insets = ViewCompat.getRootWindowInsets(root)
+            val ime = if (insets?.isVisible(WindowInsetsCompat.Type.ime()) == true) {
+                insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            } else {
+                0
+            }
+            // Only the part of the IME that overlaps the game root counts.
+            val loc = IntArray(2)
+            root.getLocationInWindow(loc)
+            val belowRoot = root.rootView.height - (loc[1] + root.height)
+            val target = (ime - belowRoot).coerceAtLeast(0)
+            if (target != shift) apply(target)
+        }
+
+        private fun apply(target: Int) {
+            shift = target
+            (PluviaApp.xServerView?.getRenderer() as? VulkanRenderer)?.setContentInsetBottom(target)
+            PluviaApp.touchpadView?.setContentInsetBottom(target)
+        }
+    }
+
     /**
      * Text focus = Battle.net caret file OR WoW magenta marker OR Battle.net login on top OR WoW glue screen.
      * Shows/hides the IME on focus edges only.
      */
     private class AutoKeyboard(
-        private val root: View,
+        val root: View,
         container: Container,
         private val hideImeReceiver: () -> Unit,
     ) {
@@ -239,9 +356,39 @@ object WowSessionInput {
             TextFocusProbe.setEnabled(false)
         }
 
+        /** WoW is up but its in-game UI (cyan marker) never appeared: login / realm / character screens. */
+        private fun onGlueScreen(): Boolean {
+            val wowId = windows.wowWindowId
+            return wowId != 0 && !TextFocusProbe.cyanSeen(wowId) && TextFocusProbe.presentingMs(wowId) > 0
+        }
+
+        private var lastShowMs = 0L
+
+        /** Shows the IME unless it is up or was just requested (the show path toggles). */
+        private fun showKeyboard() {
+            val now = SystemClock.uptimeMillis()
+            if (imeVisible() || now - lastShowMs < 1000) return
+            lastShowMs = now
+            PluviaApp.touchpadView?.requestShowKeyboard()
+        }
+
+        /** A plain tap: re-open a hidden keyboard on login screens or while a text field has focus. */
+        fun onTap() {
+            if (!root.isAttachedToWindow || imeVisible()) return
+            val reason = when {
+                windows.bnetLoginOnTop -> "bnet-login"
+                onGlueScreen() -> "wow-login"
+                TextFocusProbe.isMarkerVisible() -> "wow-editbox"
+                readFocusFile() -> "caret"
+                else -> return
+            }
+            Timber.tag(TAG).d("Tap -> keyboard (%s)", reason)
+            root.postDelayed({ if (root.isAttachedToWindow) showKeyboard() }, 150)
+        }
+
         /** Enter on the glue screen: hide and ignore the glue rule until in-game or WoW's window changes. */
         fun onEnter() {
-            if (!glueActive) return
+            if (!glueActive && !onGlueScreen()) return
             glueSuppressedFor = windows.wowWindowId
             glueActive = false
             Timber.tag(TAG).d("Enter on WoW login screen: keyboard closed")
@@ -265,7 +412,7 @@ object WowSessionInput {
         private fun imeVisible(): Boolean =
             ViewCompat.getRootWindowInsets(root)?.isVisible(WindowInsetsCompat.Type.ime()) == true
 
-        private fun hideIme() {
+        fun hideIme() {
             hideImeReceiver()
             if (Build.VERSION.SDK_INT >= 30) {
                 root.windowInsetsController?.hide(WindowInsets.Type.ime())
@@ -280,7 +427,7 @@ object WowSessionInput {
             Timber.tag(TAG).d("Text focus: %b (bnetLogin=%b, glue=%b)", focused, windows.bnetLoginOnTop, glueActive)
             if (focused) {
                 // Toggle-based path: skip if the IME is already up so it isn't closed.
-                if (!imeVisible()) PluviaApp.touchpadView?.requestShowKeyboard()
+                showKeyboard()
             } else {
                 hideIme()
             }

@@ -52,7 +52,10 @@ import timber.log.Timber
 private sealed class WowPhase {
     data object Checking : WowPhase()
     data object Setup : WowPhase()
-    data class Ready(val wowInstalled: Boolean, val bnetInstalled: Boolean) : WowPhase()
+    data class Ready(val wowInstalled: Boolean, val bnetInstalled: Boolean, val bnetLoggedIn: Boolean = false) : WowPhase() {
+        /** Via Battle.net (token, no password) once it has logged in; otherwise WoW directly. */
+        val play get() = if (bnetInstalled && bnetLoggedIn) WowTarget.PLAY_VIA_BNET else WowTarget.PLAY
+    }
 }
 
 @Composable
@@ -118,16 +121,23 @@ fun WowHomeScreen(
                         onCancel = { markAutoDone() },
                         onFinish = {
                             markAutoDone()
-                            launcher.launch(WowTarget.PLAY, finishOnExit = true)
+                            launcher.launch(p.play, finishOnExit = true)
                         },
                     )
                 } else {
                     var driver by remember { mutableStateOf(Wow.currentDriver()) }
                     var gfxApi by remember { mutableStateOf(Wow.currentGraphicsApi()) }
                     val items = buildList<Pair<String, () -> Unit>> {
-                        if (p.wowInstalled) add("Play WoW" to { launcher.launch(WowTarget.PLAY) })
+                        if (p.wowInstalled) {
+                            val label = if (p.play == WowTarget.PLAY_VIA_BNET) "Play WoW (auto-login via Battle.net)" else "Play WoW"
+                            add(label to { launcher.launch(p.play) })
+                            if (p.play == WowTarget.PLAY_VIA_BNET) {
+                                add("Play WoW directly (asks for password)" to { launcher.launch(WowTarget.PLAY) })
+                            } else if (p.bnetInstalled) {
+                                add("Play via Battle.net (auto-login after one Battle.net login)" to { launcher.launch(WowTarget.PLAY_VIA_BNET) })
+                            }
+                        }
                         if (p.bnetInstalled) {
-                            add("Play with auto-login (via Battle.net) — experimental" to { launcher.launch(WowTarget.PLAY_VIA_BNET) })
                             add("Open Battle.net (install / update / login)" to { launcher.launch(WowTarget.BNET) })
                             add("Open Battle.net (safe: --disable-gpu)" to { launcher.launch(WowTarget.BNET_SAFE) })
                         } else {
@@ -159,7 +169,8 @@ private fun detect(ctx: android.content.Context): WowPhase = try {
         WowPhase.Setup
     } else {
         val c = ContainerUtils.getContainer(ctx, Wow.APP_ID)
-        WowPhase.Ready(wowInstalled = Wow.isWowInstalled(c), bnetInstalled = Wow.isBnetInstalled(c))
+        val bnet = Wow.isBnetInstalled(c)
+        WowPhase.Ready(wowInstalled = Wow.isWowInstalled(c), bnetInstalled = bnet, bnetLoggedIn = bnet && WowBnet.isLoggedIn(c))
     }
 } catch (e: Exception) {
     Timber.tag("WowHome").e(e, "detect failed")

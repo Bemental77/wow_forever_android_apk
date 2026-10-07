@@ -378,7 +378,7 @@ class WowSetup(
                 launchBionicSteam = false,
                 localSavesOnly = true,
                 unpackFiles = false,
-                suspendPolicy = Container.SUSPEND_POLICY_MANUAL,
+                suspendPolicy = Container.SUSPEND_POLICY_NEVER, // online game: pausing only disconnects and blocks input
             )
             ContainerUtils.applyToContainer(ctx, c, data)
             c.setNeedsUnpacking(false)

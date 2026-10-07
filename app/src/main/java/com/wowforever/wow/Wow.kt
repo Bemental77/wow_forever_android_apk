@@ -12,7 +12,7 @@ enum class WowTarget {
     /** WowB-ARM64.exe directly (asks for the password). */
     PLAY,
 
-    /** Via Battle.net so the auth token is passed (experimental). */
+    /** Via Battle.net so the auth token is passed (no password prompt). */
     PLAY_VIA_BNET,
 
     /** Battle.net client. */
@@ -67,7 +67,8 @@ object Wow {
     const val IR3_SHADER_DEBUG = "nopreamble"
     const val MESA_SHADER_CACHE_DIR = "/data/data/com.wowforever/files/imagefs/home/xuser/.cache/mesa-wow-np"
 
-    const val WOW_DIR = "C:\\Program Files (x86)\\World of Warcraft\\_classic_beta_"
+    const val WOW_ROOT = "C:\\Program Files (x86)\\World of Warcraft"
+    const val WOW_DIR = "$WOW_ROOT\\_classic_beta_"
     const val WOW_EXE = "$WOW_DIR\\WowB-ARM64.exe"
 
     /** Passed as -d3d11 / -d3d12 and mirrored into Config.wtf gxApi. */
@@ -86,16 +87,27 @@ object Wow {
     const val BNET_URL =
         "https://www.battle.net/download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
 
-    // Battle.net --exec product code for PLAY_VIA_BNET (unverified).
-    const val BNET_EXEC_PRODUCT = "WOW_classic_beta"
-    const val BNET_EXEC_EXE = BNET_EXE
+    // --exec launch code: "WoWF" = WoW: Forever beta (installed as product wow_classic_beta). Not verified on device.
+    const val BNET_EXEC_PRODUCT = "WoWF"
+    const val BNET_PRODUCT_UID = "wow_classic_beta"
+
+    /** Single-instance client: a second start hands its arguments to the running Battle.net over IPC. */
+    const val BNET_IPC_EXE = "$BNET_DIR\\Battle.net.exe"
 
     // Caret watcher (assets/wow/textfocus.exe) writes '1'/'0' to TEXTFOCUS_FILE; same casing as C:\WowForever on the host.
     const val TEXTFOCUS_ASSET = "wow/textfocus.exe"
     const val TEXTFOCUS_EXE = "C:\\WowForever\\textfocus.exe"
     const val TEXTFOCUS_FILE = "C:\\WowForever\\textfocus"
 
-    // In-game addon that paints a magenta marker at the top-left while an edit box has focus.
+    // WoW's crash reporter is replaced by a stub that exits at once (original kept as .orig).
+    const val BLIZZARD_ERROR_EXE = "$WOW_DIR\\BlizzardError.exe"
+    const val BLIZZARD_ERROR_STUB_ASSET = "wow/blizzarderror-stub.exe"
+
+    /** Container extra: "1" ends the session when the WoW process exits (PLAY / PLAY_VIA_BNET). */
+    const val EXTRA_EXIT_WITH_WOW = "wowExitWithGame"
+    const val WOW_PROCESS = "wowb-arm64"
+
+    // In-game addon: magenta marker while an edit box has focus, cyan once the in-game UI is loaded.
     const val ADDON_NAME = "WowForeverInput"
     const val ADDON_ASSET_DIR = "wow/$ADDON_NAME"
     const val ADDON_DIR = "$WOW_DIR\\Interface\\AddOns\\$ADDON_NAME"

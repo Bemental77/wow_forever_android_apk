@@ -73,11 +73,24 @@ class WowLauncher(
         }.toString()
         env.put("MESA_VK_WSI_PRESENT_MODE", WowSetup.PRESENT_MODE)
         c.screenSize = WowSetup.SCREEN_SIZE
+        c.suspendPolicy = com.winlator.container.Container.SUSPEND_POLICY_NEVER
         writeSkipList(c)
         env.put("IR3_SHADER_DEBUG", Wow.IR3_SHADER_DEBUG)
         env.put("MESA_SHADER_CACHE_DIR", Wow.MESA_SHADER_CACHE_DIR)
         installTextFocusHelper(c)
         if (Wow.winToHost(c, Wow.WOW_DIR).isDirectory) installAddon(c)
+        // No Windows error dialogs: stub out BlizzardError.exe (re-applied every launch) and Wine's crash dialog.
+        if (t != WowTarget.SETUP_BNET) installBlizzardErrorStub(c)
+        disableWineCrashDialog(c)
+        c.putExtra(Wow.EXTRA_EXIT_WITH_WOW, if (t == WowTarget.PLAY || t == WowTarget.PLAY_VIA_BNET) "1" else "0")
+        // The drawer's "Touch controls" toggle shows the container profile: use "Virtual Gamepad".
+        try {
+            com.winlator.inputcontrols.InputControlsManager(ctx).getProfiles(false)
+                .firstOrNull { it.name == "Virtual Gamepad" }
+                ?.let { c.putExtra("profileId", it.id.toString()) }
+        } catch (e: Exception) {
+            Timber.tag("WowLauncher").w(e, "Virtual Gamepad profile lookup failed")
+        }
         when (t) {
             WowTarget.PLAY -> {
                 if (!Wow.isWowInstalled(c)) {
@@ -96,7 +109,8 @@ class WowLauncher(
                 // Battle.net may start WoW, so Config.wtf must be ready.
                 WowConfigWtf.ensureIfDirExists(c)
                 env.put("WINE_SIMULATE_WRITECOPY", "1")
-                c.executablePath = writeBnetBat(c, "--exec=\"launch ${Wow.BNET_EXEC_PRODUCT}\"")
+                WowBnet.patchConfig(c)
+                c.executablePath = WowBnet.writeBat(c, "", launchWow = true)
                 c.execArgs = ""
             }
             WowTarget.BNET, WowTarget.BNET_SAFE -> {
@@ -106,8 +120,9 @@ class WowLauncher(
                 }
                 WowConfigWtf.ensureIfDirExists(c)
                 env.put("WINE_SIMULATE_WRITECOPY", "1")
+                WowBnet.patchConfig(c)
                 // --in-process-gpu crashes Battle.net.
-                c.executablePath = writeBnetBat(c, if (t == WowTarget.BNET_SAFE) "--disable-gpu" else "")
+                c.executablePath = WowBnet.writeBat(c, if (t == WowTarget.BNET_SAFE) "--disable-gpu --disable-gpu-compositing" else "")
                 c.execArgs = ""
             }
             WowTarget.SETUP_BNET -> {
@@ -144,21 +159,6 @@ class WowLauncher(
         )
     }
 
-    /** Battle.net must start from cmd in its own folder, or it quits after opening the login window. */
-    private fun writeBnetBat(c: com.winlator.container.Container, args: String): String {
-        val bat = Wow.winToHost(c, Wow.BNET_BAT)
-        bat.parentFile?.mkdirs()
-        val lines = listOf(
-            "@echo off",
-            // Caret watcher for the Android auto keyboard; Wine ends it with the session.
-            "start \"\" \"${Wow.TEXTFOCUS_EXE}\" ${Wow.TEXTFOCUS_FILE}",
-            "cd /d \"${Wow.BNET_DIR}\"",
-            "\"${Wow.BNET_EXE}\" $args".trimEnd(),
-        )
-        bat.writeText(lines.joinToString("\r\n") + "\r\n")
-        return Wow.BNET_BAT
-    }
-
     /** Copies textfocus.exe into C:\WowForever and resets its state file so a stale '1' can't open the keyboard. */
     private fun installTextFocusHelper(c: com.winlator.container.Container) {
         try {
@@ -178,6 +178,38 @@ class WowLauncher(
             }
         } catch (e: Exception) {
             Timber.tag("WowLauncher").w(e, "addon install failed")
+        }
+    }
+
+    /** Swaps WoW's BlizzardError.exe for a stub that exits immediately; keeps one backup as .orig. */
+    private fun installBlizzardErrorStub(c: com.winlator.container.Container) {
+        try {
+            val exe = Wow.winToHost(c, Wow.BLIZZARD_ERROR_EXE)
+            if (!exe.isFile) return
+            val stub = ctx.assets.open(Wow.BLIZZARD_ERROR_STUB_ASSET).use { it.readBytes() }
+            if (exe.length() == stub.size.toLong() && exe.readBytes().contentEquals(stub)) return
+            val orig = java.io.File(exe.path + ".orig")
+            orig.delete()
+            if (!exe.renameTo(orig)) exe.delete()
+            exe.writeBytes(stub)
+            Timber.tag("WowLauncher").i("BlizzardError.exe replaced by stub")
+        } catch (e: Exception) {
+            Timber.tag("WowLauncher").w(e, "BlizzardError stub install failed")
+        }
+    }
+
+    /** HKCU\Software\Wine\WineDbg ShowCrashDialog=0 so winedbg never shows its crash window. */
+    private fun disableWineCrashDialog(c: com.winlator.container.Container) {
+        try {
+            val userReg = java.io.File(c.rootDir, ".wine/user.reg")
+            if (!userReg.isFile) return
+            com.winlator.core.WineRegistryEditor(userReg).use { reg ->
+                if (reg.getDwordValue("Software\\Wine\\WineDbg", "ShowCrashDialog") != 0) {
+                    reg.setDwordValue("Software\\Wine\\WineDbg", "ShowCrashDialog", 0)
+                }
+            }
+        } catch (e: Exception) {
+            Timber.tag("WowLauncher").w(e, "WineDbg registry update failed")
         }
     }
 

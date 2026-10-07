@@ -158,6 +158,10 @@ object PowerManager {
     @Volatile
     private var gamePinGeneration: Int = 0
 
+    /** True while the running session is the WoW container, which gets [WowGpuCap]. */
+    @Volatile
+    private var isWowSession: Boolean = false
+
     /**
      * Autostart with contain dir and application context
      */
@@ -167,6 +171,12 @@ object PowerManager {
         loadCurrentProfile()
         if (isProfilePowerControlEnabled()) {
             startPowerControl()
+        }
+
+        // WoW-specific GPU max cap, applied whether or not power control is enabled
+        isWowSession = WowGpuCap.isWowContainer(rootDir)
+        if (isWowSession) {
+            WowGpuCap.start(driver)
         }
 
         if (currentProfile.adaptiveFpsCapEnabled) {
@@ -274,6 +284,9 @@ object PowerManager {
         saveProfile()
         AdaptiveFpsCapController.stop()
         PerformanceMetricsCollector.stop()
+        // Restore before the driver stops, while its root worker is still up
+        if (isWowSession) WowGpuCap.stop()
+        isWowSession = false
         stopPowerControl()
         isGameStarted = false
         fpsCapApplier = null
@@ -294,6 +307,7 @@ object PowerManager {
         saveProfile()
         AdaptiveFpsCapController.pause()
         PerformanceMetricsCollector.pause()
+        if (isWowSession) WowGpuCap.stop()
         stopPowerControl()
     }
 
@@ -304,6 +318,7 @@ object PowerManager {
         if (!isGameStarted) return
         driver.start()
         applyCurrentProfile()
+        if (isWowSession) WowGpuCap.start(driver)
         if (currentProfile.adaptiveFpsCapEnabled) {
             AdaptiveFpsCapController.start(containerDir, tunerLogDirectory())
         }

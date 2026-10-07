@@ -500,13 +500,21 @@ class PServerDriver(private val context: Context? = null) : PerformanceDriver() 
         val output = executeAsRoot(PowerBaselineScripts.buildReadCommand(paths)).getOrNull()
         val captured = PowerBaselineScripts.parseReadOutput(output, paths).associateBy { it.path }
 
+        val maxPath = "$GPU_BASE_PATH/max_pwrlevel"
+        val originalMax = gpuMaxSysfsOriginal
         return paths.mapNotNull { path ->
-            captured[path] ?: readSysfsFile(path)
+            val entry = captured[path] ?: readSysfsFile(path)
                 ?.lines()
                 ?.firstOrNull()
                 ?.trim()
                 ?.takeIf { it.isNotEmpty() }
                 ?.let { PowerBaselineEntry(path, it) }
+            // A GPU ceiling already in place is not the device's own value: record the pre-cap one
+            if (entry != null && path == maxPath && originalMax != null) {
+                entry.copy(value = originalMax.toString())
+            } else {
+                entry
+            }
         }
     }
 
@@ -1255,7 +1263,7 @@ class PServerDriver(private val context: Context? = null) : PerformanceDriver() 
 
         val numLevels = getNumGpuPowerLevels()
         // Convert: UI level (high = high perf) to sysfs min_pwrlevel (high index = low perf)
-        val sysfsLevel = if (numLevels > 0) numLevels - 1 - level else level
+        val sysfsLevel = clampToGpuCeiling(if (numLevels > 0) numLevels - 1 - level else level)
 
         val minPath = "$GPU_BASE_PATH/min_pwrlevel"
         return writeGpuPowerLevel(minPath, sysfsLevel)
@@ -1274,10 +1282,70 @@ class PServerDriver(private val context: Context? = null) : PerformanceDriver() 
 
         val numLevels = getNumGpuPowerLevels()
         // Convert: UI level (high = high perf) to sysfs max_pwrlevel (low index = high perf)
-        val sysfsLevel = if (numLevels > 0) numLevels - 1 - level else level
+        val sysfsLevel = clampToGpuCeiling(if (numLevels > 0) numLevels - 1 - level else level)
 
         val maxPath = "$GPU_BASE_PATH/max_pwrlevel"
         return writeGpuPowerLevel(maxPath, sysfsLevel)
+    }
+
+    // ========================================
+    // GPU Ceiling (per-session hard cap, see WowGpuCap)
+    // ========================================
+
+    /**
+     * Fastest sysfs power level any GPU min/max write may use, or -1 for no ceiling.
+     * Every max_pwrlevel / min_pwrlevel write made through this driver (profile, auto tuner,
+     * cluster tuner, quick menu) is clamped to it, so nothing in the app can lift the cap.
+     */
+    @Volatile
+    var gpuMaxSysfsCeiling: Int = -1
+        private set
+
+    /** max_pwrlevel as it was before the ceiling was first written, recorded in baselines. */
+    @Volatile
+    var gpuMaxSysfsOriginal: Int? = null
+        private set
+
+    fun setGpuCeiling(sysfsLevel: Int, originalSysfsMax: Int?) {
+        gpuMaxSysfsOriginal = originalSysfsMax
+        gpuMaxSysfsCeiling = sysfsLevel
+    }
+
+    fun clearGpuCeiling() {
+        gpuMaxSysfsCeiling = -1
+        gpuMaxSysfsOriginal = null
+    }
+
+    private fun clampToGpuCeiling(sysfsLevel: Int): Int {
+        val ceiling = gpuMaxSysfsCeiling
+        return if (ceiling >= 0 && sysfsLevel < ceiling) ceiling else sysfsLevel
+    }
+
+    /** Raw sysfs max_pwrlevel (0 = fastest), or null when unreadable. */
+    fun readGpuMaxPwrLevelSysfs(): Int? {
+        if (!isGpuSupported()) return null
+        return readSysfsFile("$GPU_BASE_PATH/max_pwrlevel")?.trim()?.toIntOrNull()
+    }
+
+    /** Write a raw sysfs max_pwrlevel (0 = fastest), clamped to the ceiling. */
+    fun writeGpuMaxPwrLevelSysfs(sysfsLevel: Int): Boolean {
+        if (!isGpuSupported()) return false
+        return writeGpuPowerLevel("$GPU_BASE_PATH/max_pwrlevel", clampToGpuCeiling(sysfsLevel))
+    }
+
+    /**
+     * Make sure root commands can run even when [start] was never called (power control off)
+     * or a previous [stop] already shut the worker down.
+     */
+    @Synchronized
+    fun ensureExecutor() {
+        val current = pserverExecutor
+        if (current == null || current.isShutdown) {
+            pserverExecutor = Executors.newSingleThreadExecutor { r ->
+                Thread(r, "PServerDriver-Worker")
+            }
+            Timber.tag(TAG).d("Created PServer executor (ensureExecutor)")
+        }
     }
 
     override fun getDefaultProfile(): PowerProfile {

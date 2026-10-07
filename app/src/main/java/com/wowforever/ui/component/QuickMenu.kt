@@ -392,6 +392,11 @@ fun QuickMenu(
     immersiveHooks: com.wowforever.ui.screen.xr.ImmersiveSessionHooks? = null,
     modifier: Modifier = Modifier,
 ) {
+    // WoW session: minimal drawer (Keyboard / Touch controls / Exit), no launcher UI.
+    if (container?.id == com.wowforever.wow.Wow.APP_ID) {
+        com.wowforever.ui.screen.xserver.WowQuickMenu(isVisible, onDismiss, onItemSelected, activeToggleIds, onAnimationComplete, modifier)
+        return
+    }
     val immersiveControls = immersiveHooks?.controls
     val isPerformanceHudEnabled = performance.hudEnabled
     val performanceHudConfig = performance.hudConfig

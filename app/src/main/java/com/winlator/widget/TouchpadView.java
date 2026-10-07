@@ -174,6 +174,13 @@ public class TouchpadView extends View implements View.OnCapturedPointerListener
     // Show keyboard callback (wired from XServerScreen)
     private Runnable showKeyboardCallback;
     private OpenRadialMenuCallback openRadialMenuCallback;
+
+    // Sees every touch that reaches the game (not ones taken by on-screen controls).
+    private java.util.function.Consumer<MotionEvent> touchObserver;
+
+    public void setTouchObserver(java.util.function.Consumer<MotionEvent> observer) {
+        this.touchObserver = observer;
+    }
     private float radialMenuGestureX;
     private float radialMenuGestureY;
 
@@ -294,7 +301,16 @@ public class TouchpadView extends View implements View.OnCapturedPointerListener
     }
 
     private void updateXform(int outerWidth, int outerHeight, int innerWidth, int innerHeight) {
+        xformOuterWidth = outerWidth;
+        xformOuterHeight = outerHeight;
         ViewTransformation viewTransformation = new ViewTransformation();
+        if (contentInsetBottom > 0 && outerHeight > contentInsetBottom) {
+            // Game is fitted into the area above the keyboard: centered horizontally, top-aligned.
+            viewTransformation.update(outerWidth, outerHeight - contentInsetBottom, innerWidth, innerHeight);
+            XForm.makeTranslation(this.xform, -viewTransformation.viewOffsetX, 0);
+            XForm.scale(this.xform, 1.0f / viewTransformation.aspect, 1.0f / viewTransformation.aspect);
+            return;
+        }
         viewTransformation.update(outerWidth, outerHeight, innerWidth, innerHeight);
         float invAspect = 1.0f / viewTransformation.aspect;
         if (!this.xServer.getRenderer().isFullscreen()) {
@@ -303,6 +319,19 @@ public class TouchpadView extends View implements View.OnCapturedPointerListener
         } else {
             XForm.makeScale(this.xform, invAspect, invAspect);
         }
+    }
+
+    private int xformOuterWidth, xformOuterHeight;
+    private int contentInsetBottom;
+
+    /** The game is drawn fitted above a bottom inset (soft keyboard), see VulkanRenderer.setContentInsetBottom. */
+    public void setContentInsetBottom(int insetPx) {
+        if (contentInsetBottom == insetPx) return;
+        contentInsetBottom = insetPx;
+        ScreenInfo screenInfo = this.xServer.screenInfo;
+        int w = xformOuterWidth > 0 ? xformOuterWidth : getWidth();
+        int h = xformOuterHeight > 0 ? xformOuterHeight : getHeight();
+        if (w > 0 && h > 0) updateXform(w, h, screenInfo.width, screenInfo.height);
     }
 
     private class Finger {
@@ -352,6 +381,7 @@ public class TouchpadView extends View implements View.OnCapturedPointerListener
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (touchObserver != null) touchObserver.accept(event);
         boolean isStylus = isEventTriggeredByStylus(event);
         if (touchscreenMouseDisabled
                 && !isStylus

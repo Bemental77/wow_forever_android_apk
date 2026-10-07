@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wow_menu_title">Menu</string>
+    <string name="wow_menu_keyboard">Teclado</string>
+    <string name="wow_menu_touch_controls">Controles de toque</string>
+    <string name="wow_menu_exit">Sair para o início</string>
+    <string name="wow_menu_on">Ligado</string>
+    <string name="wow_menu_off">Desligado</string>
+</resources>

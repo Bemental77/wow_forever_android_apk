@@ -347,6 +347,16 @@ public class VulkanRenderer implements WindowManager.OnWindowModificationListene
 
     private void updateTransform() {
         if (nativeHandle == 0) return;
+        if (contentInsetBottom > 0 && surfaceWidth > 0 && surfaceHeight > contentInsetBottom) {
+            // Fit the whole frame above the inset (soft keyboard): centered horizontally, top-aligned.
+            float sw = xServer.screenInfo.width, sh = xServer.screenInfo.height;
+            float a = Math.min(surfaceWidth / sw, (surfaceHeight - contentInsetBottom) / sh);
+            int dstW = Math.round(sw * a), dstH = Math.round(sh * a);
+            int dstX = Math.round((surfaceWidth - dstW) * 0.5f);
+            nativeSetTransform(nativeHandle, dstX * sw / surfaceWidth, 0, (float) dstW / surfaceWidth, (float) dstH / surfaceHeight);
+            nativeScanoutSetDst(nativeHandle, dstX, 0, dstW, dstH);
+            return;
+        }
         if (fullscreen || outputScalingMode == SCALE_STRETCH) {
             nativeSetTransform(nativeHandle, 0, 0, 1.0f, 1.0f);
             nativeScanoutSetDst(nativeHandle,
@@ -876,6 +886,17 @@ public class VulkanRenderer implements WindowManager.OnWindowModificationListene
     public void toggleFullscreen() { fullscreen = !fullscreen; synchronized (lock) { updateTransform(); } xServerView.queueEvent(this::updateScene); }
     public void setScreenOffsetYRelativeToCursor(boolean b) { screenOffsetYRelativeToCursor = b; synchronized (lock) { updateTransform(); } }
     public boolean isScreenOffsetYRelativeToCursor() { return screenOffsetYRelativeToCursor; }
+
+    private volatile int contentInsetBottom = 0;
+
+    /** Fits the frame into the surface minus [px] at the bottom (0 = normal layout). */
+    public void setContentInsetBottom(int px) {
+        synchronized (lock) {
+            if (contentInsetBottom == px) return;
+            contentInsetBottom = px;
+            updateTransform();
+        }
+    }
     public void setMagnifierZoom(float zoom) { magnifierZoom = zoom; }
     public float getMagnifierZoom() { return magnifierZoom; }
     public void setUnviewableWMClasses(String... classes) { this.unviewableWMClasses = classes; }

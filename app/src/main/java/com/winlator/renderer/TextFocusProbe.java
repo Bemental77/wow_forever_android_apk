@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import com.winlator.xserver.Drawable;
 import com.winlator.xserver.Window;
 import java.nio.ByteBuffer;
+import timber.log.Timber;
 
 /**
  * Samples the top-left pixels of presented frames for the WowForeverInput addon's markers:
@@ -86,8 +87,13 @@ public final class TextFocusProbe {
             }
             if (s.lastMs == 0 || now - s.lastMs > GAP_MS) s.firstMs = now;
             s.lastMs = now;
-            s.magentaMs = (hit & 1) != 0 ? now : 0;
-            if ((hit & 2) != 0) s.cyanSeen = true;
+            boolean wasMagenta = s.magentaMs != 0, magenta = (hit & 1) != 0;
+            s.magentaMs = magenta ? now : 0;
+            if (magenta != wasMagenta) Timber.tag("WowInput").i("Probe window #%d: magenta %s", key, magenta ? "on" : "off");
+            if ((hit & 2) != 0 && !s.cyanSeen) {
+                s.cyanSeen = true;
+                Timber.tag("WowInput").i("Probe window #%d: cyan seen (in-game UI loaded)", key);
+            }
         }
     }
 

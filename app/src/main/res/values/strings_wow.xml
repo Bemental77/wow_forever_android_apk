@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="wow_menu_title">Menu</string>
+    <string name="wow_menu_keyboard">Keyboard</string>
+    <string name="wow_menu_touch_controls">Touch controls</string>
+    <string name="wow_menu_exit">Exit to home</string>
+    <string name="wow_menu_on">On</string>
+    <string name="wow_menu_off">Off</string>
+</resources>
