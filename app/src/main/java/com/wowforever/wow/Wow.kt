@@ -46,7 +46,7 @@ object Wow {
     const val DRIVER_ALT = "Turnip-WoW-scheduler-test"
 
     // Patched ARM64 DXVK 2.4.1 (assets/wow): no premature chunk frees, SKIP_FILE support, device-lost recovery.
-    const val DXVK_ASSET = "wow/dxvk-2.4.1-wow-aarch64-r6.wcp"
+    const val DXVK_ASSET = "wow/dxvk-2.4.1-wow-aarch64-r8.wcp"
 
     // Skipped compute shaders: WoW GI + ocean FFT (Adreno 650 perf). Hashes change with WoW patches.
     const val SKIP_FILE = "C:\\dxvkskip.txt"
