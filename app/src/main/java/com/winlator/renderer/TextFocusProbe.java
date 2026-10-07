@@ -63,6 +63,11 @@ public final class TextFocusProbe {
     static void onPresent(Window window, Drawable drawable) {
         if (!enabled || window == null || drawable == null) return;
         if (drawable.width < CYAN_X + 1 || drawable.height < 2) return;
+        // Only WoW's window: re-locking other apps' buffers (Battle.net/CEF) stops their repaints.
+        Window top = window;
+        while (top != null && !top.isApplicationWindow()) top = top.getParent();
+        String cls = top != null ? top.getClassName() : null;
+        if (cls == null || !cls.toLowerCase(java.util.Locale.ROOT).contains("wowb-arm64")) return;
         long now = SystemClock.uptimeMillis();
         synchronized (TextFocusProbe.class) {
             if (now - lastSampleMs < INTERVAL_MS) return;

@@ -10,7 +10,7 @@ object WowBnet {
     private const val LOG_DIR = "C:\\users\\xuser\\AppData\\Local\\Battle.net\\Logs"
     private const val LOGIN_MARKER = "Logged into Battle.net successfully"
 
-    /** CEF hardware acceleration leaves the main window blank under Wine; Battle.net reads this at start. */
+    /** Streaming off; hardware acceleration ON (with it off, CEF stops repainting on this Wine/X server). */
     fun patchConfig(c: Container) {
         try {
             val f = Wow.winToHost(c, CONFIG)
@@ -19,8 +19,8 @@ object WowBnet {
                 ?: JSONObject()
             val client = root.optJSONObject("Client") ?: JSONObject().also { root.put("Client", it) }
             val streaming = client.optJSONObject("Streaming") ?: JSONObject().also { client.put("Streaming", it) }
-            if (client.optString("HardwareAcceleration") == "false" && streaming.optString("StreamingEnabled") == "false") return
-            client.put("HardwareAcceleration", "false")
+            if (client.optString("HardwareAcceleration") == "true" && streaming.optString("StreamingEnabled") == "false") return
+            client.put("HardwareAcceleration", "true")
             streaming.put("StreamingEnabled", "false")
             f.parentFile?.mkdirs()
             f.writeText(root.toString(4))
