@@ -30,6 +30,7 @@ object PerformanceMetricsCollector {
     private const val FRAME_WINDOW_MS = 2_000L
     private const val SLOW_FRAME_FACTOR = 1.5
     private const val LOG_EVERY_N_SAMPLES = 10
+    private const val CORE_CHECK_EVERY_N_SAMPLES = 20
     private const val MAX_LOG_BYTES = 20L * 1024L * 1024L
     private const val MAX_SESSION_FILES = 5
     private const val DEFAULT_REFRESH_RATE = 60f
@@ -46,6 +47,7 @@ object PerformanceMetricsCollector {
     private val sessionLog = JsonlSessionLog(TAG, "metrics-", MAX_LOG_BYTES, MAX_SESSION_FILES)
     private var sampleCount = 0L
     private var displayRefreshRate = DEFAULT_REFRESH_RATE
+    private var appContext: Context? = null
 
     @Volatile
     private var paused = false
@@ -58,6 +60,8 @@ object PerformanceMetricsCollector {
         if (isRunning) return
 
         val appContext = context.applicationContext
+        this.appContext = appContext
+        CoreParkingWatch.reset()
         displayRefreshRate = readDisplayRefreshRate(appContext)
         cpuSampler.reset()
         gpuSampler.reset()
@@ -150,6 +154,7 @@ object PerformanceMetricsCollector {
         appendLog(snapshot)
 
         sampleCount++
+        if (sampleCount % CORE_CHECK_EVERY_N_SAMPLES == 0L) appContext?.let { CoreParkingWatch.check(it) }
         if (sampleCount % LOG_EVERY_N_SAMPLES == 0L) {
             Timber.tag(TAG).i(
                 "fps=%.1f p95=%.1fms slow=%d/%d cpu=%s%%(%s) gpu=%s%% cpuTemp=%s gpuTemp=%s",
