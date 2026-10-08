@@ -4,6 +4,7 @@ import android.content.Context
 import com.wowforever.PrefManager
 import com.wowforever.utils.ContainerUtils
 import com.winlator.container.Container
+import com.winlator.core.GPUInformation
 import java.io.File
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -43,6 +44,7 @@ object Wow {
     const val DRIVER_DEFAULT = "Turnip-a6xx-Banner-26.3.0-0b2fa04"
     const val DRIVER_DEFAULT_ASSET = "wow/$DRIVER_DEFAULT.zip"
     const val DRIVER_RP6 = "Turnip-V32-RP6sched"
+    const val DRIVER_SYSTEM = "System"
     const val DRIVER_ALT = "Turnip-WoW-scheduler-test"
 
     // Patched ARM64 DXVK 2.4.1 (assets/wow): no premature chunk frees, SKIP_FILE support, device-lost recovery.
@@ -126,6 +128,15 @@ object Wow {
     fun isBnetInstalled(c: Container) = winToHost(c, BNET_EXE).isFile
 
     fun currentDriver(): String = PrefManager.wowDriver.ifEmpty { DRIVER_DEFAULT }
+
+    /** Turnip only runs on Adreno; Mali, Xclipse and PowerVR use the device's own Vulkan driver. */
+    fun isAdreno(ctx: Context): Boolean = GPUInformation.isAdrenoGPU(ctx)
+
+    /** graphicsDriverConfig "version": bundled Turnip on Adreno, "System" elsewhere. */
+    fun driverFor(ctx: Context): String = if (isAdreno(ctx)) currentDriver() else DRIVER_SYSTEM
+
+    /** Adreno samples BCn textures natively; other mobile GPUs need the Wrapper's BCn decode. */
+    fun bcnEmulationFor(ctx: Context): String = if (isAdreno(ctx)) "none" else "auto"
 
     fun currentGraphicsApi(): String = if (PrefManager.wowGraphicsApi == GFX_D3D12) GFX_D3D12 else GFX_D3D11
 

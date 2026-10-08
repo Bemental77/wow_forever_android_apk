@@ -56,7 +56,7 @@ class WowLauncher(
         c.putExtra(Wow.EXTRA_VKD3D, vkd3d)
         // Migrations for older WoW containers.
         c.isSdlControllerAPI = true
-        c.graphicsDriverConfig = KeyValueSet(c.graphicsDriverConfig).apply { put("bcnEmulation", WowSetup.BCN_EMULATION) }.toString()
+        c.graphicsDriverConfig = KeyValueSet(c.graphicsDriverConfig).apply { put("bcnEmulation", Wow.bcnEmulationFor(ctx)) }.toString()
         c.putExtra("sharpnessEffect", "None")
         // Keep DRI3 on; add WoW's DXVK options unless DXVK_CONFIG is already set.
         c.isUseDRI3 = true
@@ -67,7 +67,7 @@ class WowLauncher(
         val driver = Wow.currentDriver().let { if (it == Wow.DRIVER_RP6) Wow.DRIVER_DEFAULT else it }
         PrefManager.wowDriver = driver
         c.graphicsDriverConfig = KeyValueSet(c.graphicsDriverConfig).apply {
-            put("version", driver)
+            put("version", if (Wow.isAdreno(ctx)) driver else Wow.DRIVER_SYSTEM)
             put("presentMode", WowSetup.PRESENT_MODE)
             put("syncFrame", WowSetup.SYNC_FRAME)
         }.toString()

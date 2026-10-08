@@ -308,9 +308,6 @@ class WowSetup(
     }
 
     companion object {
-        /** No BCn transcode: Adreno samples BCn natively. */
-        const val BCN_EMULATION = "none"
-
         /** FIFO present mode; mailbox caused judder. */
         const val PRESENT_MODE = "fifo"
 
@@ -337,9 +334,9 @@ class WowSetup(
                 put("MESA_SHADER_CACHE_DIR", Wow.MESA_SHADER_CACHE_DIR)
             }
             val gdc = KeyValueSet(Container.DEFAULT_GRAPHICSDRIVERCONFIG).apply {
-                put("version", Wow.currentDriver())
+                put("version", Wow.driverFor(ctx))
                 put("adrenotoolsTurnip", "1")
-                put("bcnEmulation", BCN_EMULATION)
+                put("bcnEmulation", Wow.bcnEmulationFor(ctx))
                 put("presentMode", PRESENT_MODE)
                 put("syncFrame", SYNC_FRAME)
             }
