@@ -36,6 +36,7 @@ class WowLauncher(
 
     private suspend fun doLaunch(t: WowTarget, finishOnExit: Boolean) {
         val c = ContainerUtils.getContainer(ctx, Wow.APP_ID)
+        WowImport.runIfPresent(ctx, c)
         // WRITECOPY emulation is only for Battle.net; WoW runs without it.
         val env = EnvVars(c.envVars).apply { remove("WINE_SIMULATE_WRITECOPY"); remove("WINEDLLOVERRIDES") }
         // D3D12 needs ARM64 vkd3d-proton; only direct PLAY is blocked without it.
