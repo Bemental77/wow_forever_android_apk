@@ -37,7 +37,8 @@ public abstract class DesktopHelper {
     }
 
     private static void setFocusedWindow(XServer xServer, Window window) {
-        if (window.isApplicationWindow()) {
+        // Tooltips (WS_EX_NOACTIVATE) must not take focus: bringToFront would activate them and swallow keystrokes.
+        if (window.isApplicationWindow() && window.acceptsFocus()) {
             boolean parentIsRoot = window.getParent() == xServer.windowManager.rootWindow;
             xServer.windowManager.setFocus(window, parentIsRoot ? WindowManager.FocusRevertTo.POINTER_ROOT : WindowManager.FocusRevertTo.PARENT);
             xServer.getWinHandler().bringToFront(window.getClassName(), window.getHandle());

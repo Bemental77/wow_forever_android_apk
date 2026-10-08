@@ -193,14 +193,22 @@ object WowSessionInput {
         fun refresh(wm: WindowManager) {
             val mapped = ArrayList<Window>()
             collect(wm.rootWindow, mapped)
-            val log = mapped.joinToString(" | ") { "#${it.id} '${it.name}' class='${it.className}' ${it.width}x${it.height}" }
+            val log = mapped.joinToString(" | ") { describe(it) } + " focus=#${wm.focusedWindow?.id ?: 0}"
             if (log != lastLog) {
                 lastLog = log
                 Timber.tag(TAG).i("Mapped windows (bottom->top): %s", log.ifEmpty { "none" })
             }
-            val top = mapped.lastOrNull { !it.className.contains("explorer.exe", ignoreCase = true) }
+            // Tooltips and other no-input popups never count as the top window.
+            val top = mapped.lastOrNull { !it.className.contains("explorer.exe", ignoreCase = true) && it.acceptsFocus() }
             bnetLoginOnTop = top != null && isBnetLogin(top)
             wowWindowId = mapped.lastOrNull { isWow(it) }?.id ?: 0
+        }
+
+        private fun describe(w: Window): String {
+            val tr = w.getProperty(com.winlator.xserver.Atom.getId("WM_TRANSIENT_FOR"))?.getInt(0) ?: 0
+            val type = w.getProperty(com.winlator.xserver.Atom.getId("_NET_WM_WINDOW_TYPE"))?.let { com.winlator.xserver.Atom.getName(it.getInt(0)) } ?: ""
+            return "#${w.id} '${w.name}' class='${w.className}' ${w.width}x${w.height}+${w.x}+${w.y} or=${w.attributes.isOverrideRedirect} tr=#$tr type=$type hwnd=${java.lang.Long.toHexString(w.handle)}" +
+                (if (w.width < 200) " props{" + w.serializeProperties().lines().filter { !it.startsWith("_NET_WM_ICON") }.joinToString(";").take(800) + "}" else "")
         }
 
         // Mapped application windows in stacking order (children above their parent).

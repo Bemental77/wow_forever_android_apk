@@ -161,6 +161,23 @@ public class Window extends XResource {
         return property != null ? property.getInt(wmHints.ordinal()) : 0;
     }
 
+    /** False for windows that never take keyboard focus: Wine WS_EX_NOACTIVATE popups (tooltips) or ICCCM "No Input" windows. */
+    public boolean acceptsFocus() {
+        Property exStyle = getProperty(Atom.getId("_WINE_HWND_EXSTYLE"));
+        if (exStyle != null && exStyle.data.capacity() >= 4 && (exStyle.getInt(0) & 0x08000000) != 0) return false;
+        Property hints = getProperty(Atom.getId("WM_HINTS"));
+        if (hints == null || hints.data.capacity() < 8) return true;
+        if ((hints.getInt(WMHints.FLAGS.ordinal()) & 1) == 0 || hints.getInt(WMHints.INPUT.ordinal()) != 0) return true;
+        Property protocols = getProperty(Atom.getId("WM_PROTOCOLS"));
+        if (protocols != null) {
+            int takeFocus = Atom.getId("WM_TAKE_FOCUS");
+            for (int i = 0; i < protocols.data.capacity() / 4; i++) {
+                if (protocols.getInt(i) == takeFocus) return true;
+            }
+        }
+        return false;
+    }
+
     public int getProcessId() {
         Property property = getProperty(Atom.getId("_NET_WM_PID"));
         return property != null ? property.getInt(0) : 0;
