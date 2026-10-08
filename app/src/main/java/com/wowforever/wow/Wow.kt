@@ -105,6 +105,9 @@ object Wow {
 
     /** Container extra: "1" ends the session when the WoW process exits (PLAY / PLAY_VIA_BNET). */
     const val EXTRA_EXIT_WITH_WOW = "wowExitWithGame"
+
+    /** Container extra: launch target name; only a direct PLAY shows WoW's own password screen. */
+    const val EXTRA_LAUNCH_TARGET = "wowLaunchTarget"
     const val WOW_PROCESS = "wowb-arm64"
 
     // In-game addon: magenta marker while an edit box has focus, cyan once the in-game UI is loaded.

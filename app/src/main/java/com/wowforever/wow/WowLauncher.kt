@@ -83,6 +83,7 @@ class WowLauncher(
         if (t != WowTarget.SETUP_BNET) installBlizzardErrorStub(c)
         disableWineCrashDialog(c)
         c.putExtra(Wow.EXTRA_EXIT_WITH_WOW, if (t == WowTarget.PLAY || t == WowTarget.PLAY_VIA_BNET) "1" else "0")
+        c.putExtra(Wow.EXTRA_LAUNCH_TARGET, t.name)
         // The drawer's "Touch controls" toggle shows the container profile: use "Virtual Gamepad".
         try {
             com.winlator.inputcontrols.InputControlsManager(ctx).getProfiles(false)

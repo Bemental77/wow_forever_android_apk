@@ -319,6 +319,8 @@ object WowSessionInput {
         private val hideImeReceiver: () -> Unit,
     ) {
         private val focusFile = Wow.winToHost(container, Wow.TEXTFOCUS_FILE)
+        // Battle.net launches skip WoW's password screen, so the glue rule only applies to a direct PLAY.
+        private val glueRuleEnabled = container.getExtra(Wow.EXTRA_LAUNCH_TARGET, "PLAY") == "PLAY"
         private val windows = WindowWatcher()
         private var xServer: XServer? = null
         private var scope: CoroutineScope? = null
@@ -367,7 +369,7 @@ object WowSessionInput {
         /** WoW is up but its in-game UI (cyan marker) never appeared: login / realm / character screens. */
         private fun onGlueScreen(): Boolean {
             val wowId = windows.wowWindowId
-            return wowId != 0 && !TextFocusProbe.cyanSeen(wowId) && TextFocusProbe.presentingMs(wowId) > 0
+            return glueRuleEnabled && wowId != 0 && !TextFocusProbe.cyanSeen(wowId) && TextFocusProbe.presentingMs(wowId) > 0
         }
 
         private var lastShowMs = 0L
@@ -406,7 +408,7 @@ object WowSessionInput {
         private fun computeFocus(): Boolean {
             val wowId = windows.wowWindowId
             if (glueSuppressedFor != 0 && glueSuppressedFor != wowId) glueSuppressedFor = 0
-            glueActive = wowId != 0 && glueSuppressedFor == 0 && !TextFocusProbe.cyanSeen(wowId) &&
+            glueActive = glueRuleEnabled && wowId != 0 && glueSuppressedFor == 0 && !TextFocusProbe.cyanSeen(wowId) &&
                 TextFocusProbe.presentingMs(wowId) >= GLUE_DELAY_MS
             return glueActive || windows.bnetLoginOnTop || TextFocusProbe.isMarkerVisible() || readFocusFile()
         }

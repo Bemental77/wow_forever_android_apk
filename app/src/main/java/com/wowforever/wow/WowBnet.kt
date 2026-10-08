@@ -64,20 +64,29 @@ object WowBnet {
                 "set n=0",
                 ":wait",
                 // timeout + ping: either one alone may return at once under Wine.
-                "timeout /t 10 /nobreak >nul 2>&1",
-                "ping -n 6 127.0.0.1 >nul 2>&1",
-                "tasklist | find /i \"${Wow.WOW_PROCESS}\" >nul && exit /b 0",
+                "timeout /t 4 /nobreak >nul 2>&1",
+                "ping -n 3 127.0.0.1 >nul 2>&1",
+                "tasklist | find /i \"${Wow.WOW_PROCESS}\" >nul && goto close",
                 "set /a n+=1",
-                "if %n% GEQ 40 exit /b 0",
+                "if %n% GEQ 100 exit /b 0",
                 // Stop once Battle.net is closed (after a grace period for its first start).
-                "if %n% LSS 4 goto send",
+                "if %n% LSS 10 goto send",
                 "tasklist | find /i \"battle.net.exe\" >nul || exit /b 0",
                 ":send",
                 // Fallback: open Battle.net on the beta's tab so one tap on Play works.
-                "if %n%==6 start \"\" \"${Wow.BNET_IPC_EXE}\" --game=${Wow.BNET_PRODUCT_UID} " +
+                "if %n%==15 start \"\" \"${Wow.BNET_IPC_EXE}\" --game=${Wow.BNET_PRODUCT_UID} " +
                     "--gamepath=\"${Wow.WOW_ROOT}\" --productcode=${Wow.BNET_PRODUCT_UID}",
-                "start \"\" \"${Wow.BNET_IPC_EXE}\" $exec",
+                // Re-send the launch every ~4 tries; more often makes Battle.net queue duplicates.
+                "set /a m=n %% 4",
+                "if %m%==0 start \"\" \"${Wow.BNET_IPC_EXE}\" $exec",
                 "goto wait",
+                // WoW is up: once it has authenticated, close Battle.net (its CEF processes cost
+                // ~1 GB and Android's low-memory killer then ends the whole app).
+                ":close",
+                "timeout /t 20 /nobreak >nul 2>&1",
+                "ping -n 21 127.0.0.1 >nul 2>&1",
+                "taskkill /f /im \"Battle.net.exe\" >nul 2>&1",
+                "exit /b 0",
             )
         }
         val bat = Wow.winToHost(c, Wow.BNET_BAT)

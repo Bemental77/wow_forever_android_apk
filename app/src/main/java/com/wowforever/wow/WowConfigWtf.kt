@@ -8,6 +8,7 @@ import timber.log.Timber
 object WowConfigWtf {
     // Always forced: narrator / TTS asserts under Wine.
     private val forced = linkedMapOf(
+        "EnableVoiceChat" to "0", // its proxy process costs ~95 MB on a memory-tight device
         "accessibilityScreenNarrationEnabled" to "0",
         "showScreenNarrationDialog" to "0",
         "textToSpeech" to "0",
