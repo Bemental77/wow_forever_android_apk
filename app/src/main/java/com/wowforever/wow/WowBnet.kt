@@ -10,7 +10,10 @@ object WowBnet {
     private const val LOG_DIR = "C:\\users\\xuser\\AppData\\Local\\Battle.net\\Logs"
     private const val LOGIN_MARKER = "Logged into Battle.net successfully"
 
-    /** Streaming off; hardware acceleration ON (with it off, CEF stops repainting on this Wine/X server). */
+    /** Software CEF rendering: with GPU rendering, Battle.net pages/dialogs repaint partially or not at all here. */
+    const val CEF_ARGS = "--disable-gpu --disable-gpu-compositing"
+
+    /** Hardware acceleration ON (off stops CEF repainting here); undoes the old Streaming override. */
     fun patchConfig(c: Container) {
         try {
             val f = Wow.winToHost(c, CONFIG)
@@ -18,10 +21,9 @@ object WowBnet {
                 ?.let { runCatching { JSONObject(it.readText().removePrefix("\uFEFF")) }.getOrNull() }
                 ?: JSONObject()
             val client = root.optJSONObject("Client") ?: JSONObject().also { root.put("Client", it) }
-            val streaming = client.optJSONObject("Streaming") ?: JSONObject().also { client.put("Streaming", it) }
-            if (client.optString("HardwareAcceleration") == "true" && streaming.optString("StreamingEnabled") == "false") return
+            if (client.optString("HardwareAcceleration") == "true" && !client.has("Streaming")) return
             client.put("HardwareAcceleration", "true")
-            streaming.put("StreamingEnabled", "false")
+            client.remove("Streaming")
             f.parentFile?.mkdirs()
             f.writeText(root.toString(4))
             Timber.tag("WowBnet").i("Battle.net.config patched")

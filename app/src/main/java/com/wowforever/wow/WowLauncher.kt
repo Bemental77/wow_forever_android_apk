@@ -110,7 +110,7 @@ class WowLauncher(
                 WowConfigWtf.ensureIfDirExists(c)
                 env.put("WINE_SIMULATE_WRITECOPY", "1")
                 WowBnet.patchConfig(c)
-                c.executablePath = WowBnet.writeBat(c, "", launchWow = true)
+                c.executablePath = WowBnet.writeBat(c, WowBnet.CEF_ARGS, launchWow = true)
                 c.execArgs = ""
             }
             WowTarget.BNET, WowTarget.BNET_SAFE -> {
@@ -122,7 +122,7 @@ class WowLauncher(
                 env.put("WINE_SIMULATE_WRITECOPY", "1")
                 WowBnet.patchConfig(c)
                 // --in-process-gpu crashes Battle.net.
-                c.executablePath = WowBnet.writeBat(c, if (t == WowTarget.BNET_SAFE) "--disable-gpu --disable-gpu-compositing" else "")
+                c.executablePath = WowBnet.writeBat(c, WowBnet.CEF_ARGS)
                 c.execArgs = ""
             }
             WowTarget.SETUP_BNET -> {
