@@ -94,4 +94,36 @@ object WowBnet {
         bat.writeText(lines.joinToString("\r\n") + "\r\n")
         return Wow.BNET_BAT
     }
+
+    /**
+     * Runs the Battle.net installer, then restarts the Battle.net it opens with [CEF_ARGS]: started by
+     * the installer it lacks them and its login page stays blank.
+     */
+    fun writeSetupBat(c: Container): String {
+        val lines = listOf(
+            "@echo off",
+            "start \"\" \"${Wow.TEXTFOCUS_EXE}\" ${Wow.TEXTFOCUS_FILE}",
+            "\"${Wow.SETUP_EXE}\"",
+            "set n=0",
+            ":wait",
+            "tasklist | find /i \"battle.net.exe\" >nul && goto restart",
+            "set /a n+=1",
+            "if %n% GEQ 60 exit /b 0",
+            "timeout /t 2 /nobreak >nul 2>&1",
+            "ping -n 2 127.0.0.1 >nul 2>&1",
+            "goto wait",
+            ":restart",
+            // Let the first instance finish its post-install work before replacing it.
+            "timeout /t 8 /nobreak >nul 2>&1",
+            "ping -n 9 127.0.0.1 >nul 2>&1",
+            "taskkill /f /im \"Battle.net.exe\" >nul 2>&1",
+            "timeout /t 3 /nobreak >nul 2>&1",
+            "cd /d \"${Wow.BNET_DIR}\"",
+            "\"${Wow.BNET_EXE}\" $CEF_ARGS",
+        )
+        val bat = Wow.winToHost(c, Wow.BNET_SETUP_BAT)
+        bat.parentFile?.mkdirs()
+        bat.writeText(lines.joinToString("\r\n") + "\r\n")
+        return Wow.BNET_SETUP_BAT
+    }
 }

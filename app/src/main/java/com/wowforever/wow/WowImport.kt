@@ -15,15 +15,18 @@ import timber.log.Timber
 object WowImport {
     private const val TAG = "WowImport"
     private const val IMPORT_DIR = "import/World of Warcraft"
+    private const val SETTLE_MS = 60_000L
 
     fun importDir(ctx: Context): File? = ctx.getExternalFilesDir(null)?.let { File(it, IMPORT_DIR) }
 
     /** Moves the import folder into the container; returns the number of files imported. */
     fun runIfPresent(ctx: Context, c: Container): Int {
         val src = importDir(ctx)?.takeIf { it.isDirectory } ?: return 0
-        val files = src.walkTopDown().filter { it.isFile }.toList()
+        // Files changed in the last minute may still be being copied in; the next launch takes them.
+        val settled = System.currentTimeMillis() - SETTLE_MS
+        val files = src.walkTopDown().filter { it.isFile && it.lastModified() < settled }.toList()
         if (files.isEmpty()) {
-            src.deleteRecursively()
+            removeEmptyDirs(src)
             return 0
         }
         val dst = Wow.winToHost(c, Wow.WOW_ROOT)
@@ -31,6 +34,8 @@ object WowImport {
         Timber.tag(TAG).i("Importing %d files (%d MB) from %s", files.size, total shr 20, src)
         SnackbarManager.show("Importing World of Warcraft files (${total shr 30} GB). This takes a few minutes.")
         var done = 0
+        var bytes = 0L
+        var shownQuarter = 0
         for (f in files) {
             val rel = f.relativeTo(src).path
             val out = File(dst, rel)
@@ -39,13 +44,24 @@ object WowImport {
                 f.inputStream().use { input -> out.outputStream().use { input.copyTo(it, 1 shl 20) } }
             }
             if (out.length() != f.length()) error("Import failed for $rel (size mismatch)")
+            bytes += out.length()
             f.delete()
             done++
+            val quarter = if (total > 0) (bytes * 4 / total).toInt() else 4
+            if (quarter in 1..3 && quarter > shownQuarter) {
+                shownQuarter = quarter
+                SnackbarManager.show("Importing World of Warcraft files: ${quarter * 25}%")
+            }
             if (done % 200 == 0) Timber.tag(TAG).i("Imported %d/%d", done, files.size)
         }
-        src.deleteRecursively()
+        removeEmptyDirs(src)
         Timber.tag(TAG).i("Import finished: %d files", done)
         SnackbarManager.show("World of Warcraft import finished.")
         return done
+    }
+
+    /** Deletes only empty folders (deepest first), so a copy still running into [root] keeps its folders. */
+    private fun removeEmptyDirs(root: File) {
+        root.walkBottomUp().filter { it.isDirectory }.forEach { d -> if (d.list()?.isEmpty() == true) d.delete() }
     }
 }

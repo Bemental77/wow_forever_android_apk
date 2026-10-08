@@ -36,6 +36,7 @@ class WowLauncher(
 
     private suspend fun doLaunch(t: WowTarget, finishOnExit: Boolean) {
         val c = ContainerUtils.getContainer(ctx, Wow.APP_ID)
+        WowLogExport.run(ctx, c)
         WowImport.runIfPresent(ctx, c)
         // WRITECOPY emulation is only for Battle.net; WoW runs without it.
         val env = EnvVars(c.envVars).apply { remove("WINE_SIMULATE_WRITECOPY"); remove("WINEDLLOVERRIDES") }
@@ -132,7 +133,8 @@ class WowLauncher(
                     showError("Battle.net installer missing", "Re-run setup to download it again.")
                     return
                 }
-                c.executablePath = Wow.SETUP_EXE
+                WowBnet.patchConfig(c)
+                c.executablePath = WowBnet.writeSetupBat(c)
                 c.execArgs = ""
             }
             WowTarget.MENU -> return
@@ -184,17 +186,19 @@ class WowLauncher(
     }
 
     /** Swaps WoW's BlizzardError.exe for a stub that exits immediately; keeps one backup as .orig. */
+    /** Stubs every BlizzardError.exe (WoW's and Battle.net's versioned copies) so no crash dialog appears. */
     private fun installBlizzardErrorStub(c: com.winlator.container.Container) {
         try {
-            val exe = Wow.winToHost(c, Wow.BLIZZARD_ERROR_EXE)
-            if (!exe.isFile) return
             val stub = ctx.assets.open(Wow.BLIZZARD_ERROR_STUB_ASSET).use { it.readBytes() }
-            if (exe.length() == stub.size.toLong() && exe.readBytes().contentEquals(stub)) return
-            val orig = java.io.File(exe.path + ".orig")
-            orig.delete()
-            if (!exe.renameTo(orig)) exe.delete()
-            exe.writeBytes(stub)
-            Timber.tag("WowLauncher").i("BlizzardError.exe replaced by stub")
+            val roots = listOf(Wow.WOW_ROOT, Wow.BNET_DIR).map { Wow.winToHost(c, it) }.filter { it.isDirectory }
+            for (exe in roots.flatMap { r -> r.walkTopDown().maxDepth(3).filter { it.isFile && it.name.equals("BlizzardError.exe", true) } }) {
+                if (exe.length() == stub.size.toLong() && exe.readBytes().contentEquals(stub)) continue
+                val orig = java.io.File(exe.path + ".orig")
+                orig.delete()
+                if (!exe.renameTo(orig)) exe.delete()
+                exe.writeBytes(stub)
+                Timber.tag("WowLauncher").i("Stubbed %s", exe.path)
+            }
         } catch (e: Exception) {
             Timber.tag("WowLauncher").w(e, "BlizzardError stub install failed")
         }

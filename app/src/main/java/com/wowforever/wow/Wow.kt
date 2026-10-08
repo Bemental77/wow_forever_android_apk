@@ -86,6 +86,7 @@ object Wow {
     const val BNET_EXE = "$BNET_DIR\\Battle.net Launcher.exe"
     const val SETUP_EXE = "C:\\WowForever\\Battle.net-Setup.exe"
     const val BNET_BAT = "C:\\WowForever\\bnet.bat"
+    const val BNET_SETUP_BAT = "C:\\WowForever\\bnet-setup.bat"
     const val BNET_URL =
         "https://www.battle.net/download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
 
