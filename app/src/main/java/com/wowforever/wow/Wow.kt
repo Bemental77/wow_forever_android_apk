@@ -139,6 +139,15 @@ object Wow {
     /** Adreno samples BCn textures natively; other mobile GPUs need the Wrapper's BCn decode. */
     fun bcnEmulationFor(ctx: Context): String = if (isAdreno(ctx)) "none" else "auto"
 
+    /**
+     * Zero-copy (DRI3) present only on Adreno: other drivers (Mali) can't import the BGRA swapchain
+     * buffers, which leaves the screen black; Mesa's software present path copies frames instead.
+     */
+    fun useDri3For(ctx: Context): Boolean = isAdreno(ctx)
+
+    /** "forcesync" works around kgsl's missing implicit sync; it would also override the software present path. */
+    fun syncFrameFor(ctx: Context): String = if (isAdreno(ctx)) WowSetup.SYNC_FRAME else "0"
+
     fun currentGraphicsApi(): String = if (PrefManager.wowGraphicsApi == GFX_D3D12) GFX_D3D12 else GFX_D3D11
 
     fun wowArgs(): String = "-" + currentGraphicsApi()

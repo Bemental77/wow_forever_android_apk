@@ -338,7 +338,7 @@ class WowSetup(
                 put("adrenotoolsTurnip", "1")
                 put("bcnEmulation", Wow.bcnEmulationFor(ctx))
                 put("presentMode", PRESENT_MODE)
-                put("syncFrame", SYNC_FRAME)
+                put("syncFrame", Wow.syncFrameFor(ctx))
             }
             val dxc = KeyValueSet(Container.DEFAULT_DXWRAPPERCONFIG).apply { put("version", dxvkId) }
             // D: would otherwise be re-added by WineUtils pointing at shared Downloads; keep it internal.
@@ -355,7 +355,7 @@ class WowSetup(
                 graphicsDriverConfig = gdc.toString(),
                 displayRenderer = "vulkan",
                 // DRI3 on: zero-copy present (off means CPU readback every frame).
-                useDRI3 = true,
+                useDRI3 = Wow.useDri3For(ctx),
                 dxwrapper = "dxvk",
                 dxwrapperConfig = dxc.toString(),
                 screenSize = SCREEN_SIZE,

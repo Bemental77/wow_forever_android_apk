@@ -60,8 +60,8 @@ class WowLauncher(
         c.isSdlControllerAPI = true
         c.graphicsDriverConfig = KeyValueSet(c.graphicsDriverConfig).apply { put("bcnEmulation", Wow.bcnEmulationFor(ctx)) }.toString()
         c.putExtra("sharpnessEffect", "None")
-        // Keep DRI3 on; add WoW's DXVK options unless DXVK_CONFIG is already set.
-        c.isUseDRI3 = true
+        // DRI3 (zero-copy) on Adreno only; add WoW's DXVK options unless DXVK_CONFIG is already set.
+        c.isUseDRI3 = Wow.useDri3For(ctx)
         if (!env.has("DXVK_CONFIG")) env.put("DXVK_CONFIG", WowSetup.DXVK_CONFIG)
         // Bundled DXVK + default Turnip; RP6sched (old default) moves to the new default.
         val dxvkId = WowSetup(ctx) { m, _ -> Timber.tag("WowLauncher").i(m) }.ensureRenderStack()
@@ -71,7 +71,7 @@ class WowLauncher(
         c.graphicsDriverConfig = KeyValueSet(c.graphicsDriverConfig).apply {
             put("version", if (Wow.isAdreno(ctx)) driver else Wow.DRIVER_SYSTEM)
             put("presentMode", WowSetup.PRESENT_MODE)
-            put("syncFrame", WowSetup.SYNC_FRAME)
+            put("syncFrame", Wow.syncFrameFor(ctx))
         }.toString()
         env.put("MESA_VK_WSI_PRESENT_MODE", WowSetup.PRESENT_MODE)
         c.screenSize = WowSetup.SCREEN_SIZE
